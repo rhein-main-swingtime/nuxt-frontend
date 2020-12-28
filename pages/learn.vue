@@ -1,16 +1,29 @@
 <template>
   <div class="w-full">
-    Tanzen lernen!
+    <pre>{{ prettyfy(content) }}</pre>
+    <pre>{{ prettyfy(data) }}</pre>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, getModule, Prop, Vue, Watch } from 'nuxt-property-decorator'
-import DanceEventsModule from '../store/modules/DanceEventsModule'
+import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
 export default class LearnPage extends Vue {
-    // Nothing to do here atm
+    private prettyfy (data: any) {
+        return JSON.stringify(data, null, 4)
+    }
+
+    // @see https://content.nuxtjs.org/
+    async asyncData (context: any) {
+        const { $content, app } = context
+        const content = await $content(`${app.i18n.locale}/learn`).fetch()
+        const data = await $content('data/learn').fetch()
+        return {
+            content,
+            data
+        }
+    }
 }
 </script>
 
