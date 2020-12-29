@@ -2,7 +2,7 @@
 
 name: CI
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
@@ -11,7 +11,7 @@ on:
     #branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch: 
+  workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -23,13 +23,15 @@ jobs:
         name: test
         run: echo ${{ secrets.DEPLOYMENT_USER }}@${{ secrets.DEPLOYMENT_HOST }}
       - name: SSH Remote Commands
-        uses: appleboy/ssh-action@v0.1.4 
+        uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.DEPLOYMENT_HOST }}
           username: ${{ secrets.DEPLOYMENT_USER }}
           key: ${{ secrets.DEPLOYMENT_KEY }}
           script: |
-            cd ${{ secrets.DEPLOYMENT_FOLDER }}
+            cd ${{ secrets.DEPLOYMENT_ROOT }}
+            mkdir ${{ GITHUB_SHA }}_${{ secrets.DEPLOYMENT_FOLDER }}
+            cd ${{ GITHUB_SHA }}_${{ secrets.DEPLOYMENT_FOLDER }}
             git pull
             yarn install
             yarn generate
