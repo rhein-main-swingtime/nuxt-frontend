@@ -28,4 +28,8 @@ jobs:
           host: ${{ secrets.DEPLOYMENT_HOST }}
           username: ${{ secrets.DEPLOYMENT_USER }}
           key: ${{ secrets.DEPLOYMENT_KEY }}
-          script: whoami
+          script: |
+            cd ${{ DEPLOYMENT_FOLDER_FRONTEND }}
+            git pull
+            yarn install
+            yarn generate
