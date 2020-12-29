@@ -30,8 +30,8 @@ jobs:
           key: ${{ secrets.DEPLOYMENT_KEY }}
           script: |
             cd ${{ secrets.DEPLOYMENT_ROOT }}
-            mkdir ${{ GITHUB_SHA }}_${{ secrets.DEPLOYMENT_FOLDER }}
-            cd ${{ GITHUB_SHA }}_${{ secrets.DEPLOYMENT_FOLDER }}
+            mkdir $GITHUB_SHA_${{ secrets.DEPLOYMENT_FOLDER }}
+            cd $GITHUB_SHA_${{ secrets.DEPLOYMENT_FOLDER }}
             git pull
             yarn install
             yarn generate
