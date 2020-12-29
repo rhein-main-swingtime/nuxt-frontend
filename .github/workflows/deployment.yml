@@ -1,0 +1,54 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  #pull_request:
+    #branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch and Build
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.DEPLOYMENT_HOST }}
+          username: ${{ secrets.DEPLOYMENT_USER }}
+          key: ${{ secrets.DEPLOYMENT_KEY }}
+          script: |
+            cd ${{ secrets.DEPLOYMENT_ROOT }}
+            git clone git@github.com:rhein-main-swingtime/nuxt-frontend.git --depth 1 ${{ secrets.DEPLOYMENT_FOLDER }}_${{ github.sha }}
+            cd ${{ secrets.DEPLOYMENT_FOLDER }}_${{ github.sha }}
+            yarn install
+            yarn generate
+      - name: Deploy
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.DEPLOYMENT_HOST }}
+          username: ${{ secrets.DEPLOYMENT_USER }}
+          key: ${{ secrets.DEPLOYMENT_KEY }}
+          script: |
+            cd ${{ secrets.DEPLOYMENT_ROOT }}/${{ secrets.DEPLOYMENT_FOLDER }}_${{ github.sha }}
+            mv dist ../${{ secrets.DEPLOYMENT_FOLDER }}_dist_${{ github.sha }}
+            cd ${{ secrets.DEPLOYMENT_ROOT }}
+            ln -s ${{ secrets.DEPLOYMENT_FOLDER }}_dist_${{ github.sha }} soontobe.rmswing.de
+      - name: Cleanup
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.DEPLOYMENT_HOST }}
+          username: ${{ secrets.DEPLOYMENT_USER }}
+          key: ${{ secrets.DEPLOYMENT_KEY }}
+          script: |
+            cd ${{ secrets.DEPLOYMENT_ROOT }}
+            ## Deletes all but the newest 6 folders matching DEPLOYMENT_FOLDER
+            ls -tp | grep ${{ secrets.DEPLOYMENT_FOLDER }}_ | tail -n +6 | tr '\n' '\0' | xargs -I {} rm -r -- {}
