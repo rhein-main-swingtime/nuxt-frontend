@@ -51,4 +51,4 @@ jobs:
           script: |
             cd ${{ secrets.DEPLOYMENT_ROOT }}
             ## Deletes all but the newest 6 folders matching DEPLOYMENT_FOLDER
-            ls -tp | grep ${{ secrets.DEPLOYMENT_FOLDER }}_ | tail -n +6 | tr '\n' '\0' | xargs -I {} rm -r -v --force -- {}
+            ls -tp | grep ${{ secrets.DEPLOYMENT_FOLDER }}_ | tail -n +6 | tr '\n' '\0' | xargs -I {} rm -r -- {}
