@@ -42,3 +42,13 @@ jobs:
             mv dist ../${{ secrets.DEPLOYMENT_FOLDER }}_dist_${{ github.sha }}
             cd ${{ secrets.DEPLOYMENT_ROOT }}
             ln -s ${{ secrets.DEPLOYMENT_FOLDER }}_dist_${{ github.sha }} soontobe.rmswing.de
+      - name: Cleanup
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.DEPLOYMENT_HOST }}
+          username: ${{ secrets.DEPLOYMENT_USER }}
+          key: ${{ secrets.DEPLOYMENT_KEY }}
+          script: |
+            cd ${{ secrets.DEPLOYMENT_ROOT }}
+            ## Deletes all but the newest 6 folders matching DEPLOYMENT_FOLDER
+            ls -tp | grep ${{ secrets.DEPLOYMENT_FOLDER }}_ | tail -n +6 | tr '\n' '\0' | xargs -I {} rm -r -v --force -- {}
