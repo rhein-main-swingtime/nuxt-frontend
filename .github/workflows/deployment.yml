@@ -31,3 +31,14 @@ jobs:
             cd ${{ secrets.DEPLOYMENT_FOLDER }}_${{ github.sha }}
             yarn install
             yarn generate
+      - name: Deploy
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.DEPLOYMENT_HOST }}
+          username: ${{ secrets.DEPLOYMENT_USER }}
+          key: ${{ secrets.DEPLOYMENT_KEY }}
+          script: |
+            cd ${{ secrets.DEPLOYMENT_ROOT }}/${{ secrets.DEPLOYMENT_FOLDER }}_${{ github.sha }}
+            mv dist ../${{ secrets.DEPLOYMENT_FOLDER }}_dist_${{ github.sha }}
+            cd ${{ secrets.DEPLOYMENT_ROOT }}
+            ln -s soontobe.rmswing.de ${{ secrets.DEPLOYMENT_FOLDER }}_dist_${{ github.sha }}
