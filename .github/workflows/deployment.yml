@@ -27,8 +27,7 @@ jobs:
           key: ${{ secrets.DEPLOYMENT_KEY }}
           script: |
             cd ${{ secrets.DEPLOYMENT_ROOT }}
-            git clone git@github.com:rhein-main-swingtime/nuxt-frontend.git --depth 1
-            mkdir ${{ secrets.DEPLOYMENT_FOLDER }}_${{ github.sha }}
+            git clone git@github.com:rhein-main-swingtime/nuxt-frontend.git --depth 1 ${{ secrets.DEPLOYMENT_FOLDER }}_${{ github.sha }}
             cd ${{ secrets.DEPLOYMENT_FOLDER }}_${{ github.sha }}
             yarn install
             yarn generate
