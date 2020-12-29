@@ -29,7 +29,7 @@ jobs:
           username: ${{ secrets.DEPLOYMENT_USER }}
           key: ${{ secrets.DEPLOYMENT_KEY }}
           script: |
-            cd ${{ DEPLOYMENT_FOLDER_FRONTEND }}
+            cd ${{ secrets.DEPLOYMENT_FOLDER }}
             git pull
             yarn install
             yarn generate
