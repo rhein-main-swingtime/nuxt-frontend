@@ -19,10 +19,13 @@ jobs:
     name: build
     runs-on: ubuntu-latest
     steps:
+      - shell: bash
+        name: test
+        run: echo ${{ secrets.DEPLOYMENT_USER }}@${{ secrets.DEPLOYMENT_HOST }}
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@v0.1.4 
         with:
           host: ${{ secrets.DEPLOYMENT_HOST }}
-          username: ${{ secrets.DEPLOYMENT_HOST }}
+          username: ${{ secrets.DEPLOYMENT_USER }}
           key: ${{ secrets.DEPLOYMENT_KEY }}
           script: whoami
