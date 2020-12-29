@@ -41,4 +41,4 @@ jobs:
             cd ${{ secrets.DEPLOYMENT_ROOT }}/${{ secrets.DEPLOYMENT_FOLDER }}_${{ github.sha }}
             mv dist ../${{ secrets.DEPLOYMENT_FOLDER }}_dist_${{ github.sha }}
             cd ${{ secrets.DEPLOYMENT_ROOT }}
-            ln -s soontobe.rmswing.de ${{ secrets.DEPLOYMENT_FOLDER }}_dist_${{ github.sha }}
+            ln -s ${{ secrets.DEPLOYMENT_FOLDER }}_dist_${{ github.sha }} soontobe.rmswing.de
