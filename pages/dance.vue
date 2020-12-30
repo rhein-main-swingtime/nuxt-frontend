@@ -1,7 +1,7 @@
 <template>
   <div class="grid gap-4 grid-cols-12 w-full">
     <div class="col-span-12 lg:col-span-9">
-      <DanceEventsList />
+      <dance-events-list />
     </div>
     <div id="dance-page-filter" class="hidden lg:col-span-3 lg:block">
       <DanceEventsFilter class="sticky top-0" :title="$t('page-dance-events-filter')" />
