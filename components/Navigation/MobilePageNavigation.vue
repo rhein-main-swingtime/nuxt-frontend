@@ -1,6 +1,6 @@
 <template>
-  <div id="page-nav-overlay">
-    <section v-for="(items, key) in NavigationItems" :key="key" class="pb-5 flex md:hidden" :class="sectionClassBySection(key)">
+  <div id="page-nav-overlay" class="max-w-prose">
+    <section v-for="(items, key) in NavigationItems" :key="key" class="pb-5 flex lg:hidden" :class="sectionClassBySection(key)">
       <nuxt-link
         v-for="(element, idx) in items"
         :key="'page-link-'+idx"

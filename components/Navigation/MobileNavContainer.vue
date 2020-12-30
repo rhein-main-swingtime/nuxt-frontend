@@ -1,7 +1,6 @@
 <template>
   <nav name="mobile-nav-container" :class="renderedClassObject">
-    <!-- <div class="w-full h-full top-0 left-0 absolute z-0 bg-gray-700 opacity-95" /> -->
-      <slot />
+    <slot />
   </nav>
 </template>
 
@@ -26,9 +25,16 @@ const defaultClasses = {
     'sm:left-auto': true,
     'sm:right-auto': true,
     'sm:mx-7': true,
-    // 'h-screen': true
-    // 'justify-end': true,
-    // 'overflow-hidden': true
+    'md:h-screen': true,
+    'md:pb-0': true,
+    'md:w-screen': true,
+    'md:m-0': true,
+    'md:p-0': true,
+    'md:top-0': true,
+    'md:bottom-0': true,
+    'md:grid': true,
+    'md:grid-cols-auto': true,
+    'md:place-content-center': true,
     fixed: true,
     flex: true
 }

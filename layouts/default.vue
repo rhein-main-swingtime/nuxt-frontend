@@ -1,5 +1,5 @@
 <template>
-  <div id="app-container" class=" text-white antialiased font-serif flex w-full flex-wrap sm:py-16 sm:px-12 max-w-screen-xl">
+  <div id="app-container" class=" text-white antialiased font-serif flex w-full flex-wrap max-w-screen-xl">
     <page-header />
     <section id="main-content" class="flex w-full py-3 px-3">
       <Nuxt keep-alive :keep-alive-props="{ include: ['DanceEventsPage'] }" />
@@ -15,7 +15,7 @@
         activate-nav="pageNav"
         title="Menu"
         title-background="M"
-        :style-classes="{'bg-teal-600': true, 'focus:bg-teal-700': true, 'active:bg-teal-700': true}"
+        :style-classes="{'bg-teal-600': true, 'focus:bg-teal-700': true, 'active:bg-teal-700': true, 'lg:hidden': true}"
       />
     </transition>
 
