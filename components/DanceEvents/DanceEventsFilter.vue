@@ -1,11 +1,11 @@
 <template>
-  <nav>
+  <nav class="bg-gray-700 border-gray-300 border rounded-tl-lg shadow-hard mt-10" id="dance-page-filters">
     <h2 v-if="title" class="text-2xl font-sans font-bold px-2 py-3">
       <fa icon="filter" /> {{ title }}
     </h2>
-    <section v-for="(filterItems, filterCategory) in filters" :key="filterCategory.categoryName" class="flex filter-section">
-      <div class="w-full mb-5">
-        <h5 class="font-bold text-lg">
+    <section v-for="(filterItems, filterCategory) in filters" :key="filterCategory.categoryName" class="flex filter-section border-t border-gray-400">
+      <div class="w-full mb-5 p-2">
+        <h5 class="font-bold text-xl">
           {{ $t(filterCategory) }}
         </h5>
         <form>
@@ -69,17 +69,17 @@ export default class DanceEventsFilter extends Vue {
 </script>
 
 <style lang="scss">
-  #dance-page-filter nav {
-    @apply border-gray-500 border bg-gray-800 rounded-sm;
-    & section {
-      @apply border-t border-gray-500 py-2 px-2;
-    }
-    button {
-      transition: background-color 230ms;
-      @apply w-full border-gray-500 border-t py-2 px-2 content-center uppercase;
-      &.active {
-        @apply bg-red-600;
-      }
-    }
-  }
+  // #dance-page-filter nav {
+  //   @apply border-gray-500 border bg-gray-800 rounded-sm;
+  //   & section {
+  //     @apply border-t border-gray-500 py-2 px-2;
+  //   }
+  //   button {
+  //     transition: background-color 230ms;
+  //     @apply w-full border-gray-500 border-t py-2 px-2 content-center uppercase;
+  //     &.active {
+  //       @apply bg-red-600;
+  //     }
+  //   }
+  // }
 </style>

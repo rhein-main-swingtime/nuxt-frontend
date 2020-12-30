@@ -2,8 +2,8 @@
   <section class="w-auto block">
     <div class="flex flex-col flex-wrap relative">
       <div v-for="(events, date) in dates" :key="date" class="date">
-        <div class="border border-gray-300 rounded-l-none inline-block px-3 py-1 rounded-r-full mt-5 sticky top-0 overflow-hidden shadow-sm text-lg">
-          <div class="absolute w-full h-full top-0 left-0 bottom-0 bg-gray-800 opacity-75 z-0" />
+        <div class="border z-10 border-gray-300 bg-gray-700 rounded-l-none inline-block px-3 py-1 pr-5 rounded-r-full mt-10 sticky top-0 overflow-hidden shadow-sm text-xl">
+          <!-- <div class="absolute w-full h-full top-0 left-0 bottom-0  opacity-75 z-0" /> -->
           <span class="relative z-10">
             {{ dateLocalized(date) }}
           </span>
@@ -99,7 +99,7 @@ export default class DanceEventsList extends Vue {
 }
 </script>
 
-<style>
+<style lang="scss">
   .sticky-in-center {
     position: sticky;
     top: 50vh;

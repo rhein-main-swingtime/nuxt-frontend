@@ -8,17 +8,20 @@
     "nav-events-classes": "Kurse",
     "nav-events-socials": "Socials",
     "nav-get-involved": "Mitmachen",
-    "nav-homepage": "Home",
+    "nav-homepage": "Startseite",
     "nav-imprint": "Impressum",
-    "nav-learn": "Tanzen lernen",
+    "nav-learn": "Lernen",
     "nav-music": "Musik",
     "nav-scene": "Szene",
+    "nav-overlay-close": "Schließen",
     "page-dance-events-filter": "Filter",
     "page-dance-events-list-loading": "Daten werden geladen, einen Moment Geduld bitte",
     "page-dance-events-reset-filter": "Filter entfernen",
     "page-dance-events-open-event": "Besuchen",
+    "dance-event-category-socials": "Social Dance",
+    "dance-event-category-class": "Tanzkurs / Workshop",
     "site-claim": "Alles, was du wissen musst!",
     "site-subtitle": "Swing tanzen in Rhein Main",
     "site-title": "Rhein Main Swing",
-    "social": "Social"
+    "social": "Social Dance"
 }
