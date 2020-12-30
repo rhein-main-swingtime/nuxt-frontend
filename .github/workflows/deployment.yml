@@ -41,6 +41,7 @@ jobs:
             cd ${{ secrets.DEPLOYMENT_ROOT }}/${{ secrets.DEPLOYMENT_FOLDER }}_${{ github.sha }}
             mv dist ../${{ secrets.DEPLOYMENT_FOLDER }}_dist_${{ github.sha }}
             cd ${{ secrets.DEPLOYMENT_ROOT }}
+            rm soontobe.rmswing.de
             ln -s ${{ secrets.DEPLOYMENT_FOLDER }}_dist_${{ github.sha }} soontobe.rmswing.de
       - name: Cleanup
         uses: appleboy/ssh-action@v0.1.4
