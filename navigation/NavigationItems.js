@@ -1,4 +1,4 @@
-export default [
+const big = [
     {
         translation: 'nav-events-all',
         nav: {
@@ -18,7 +18,10 @@ export default [
             name: 'dance',
             query: { 'categories[]': 'class' }
         }
-    },
+    }
+]
+
+const major = [
     {
         translation: 'nav-homepage',
         nav: {
@@ -44,3 +47,26 @@ export default [
         }
     }
 ]
+
+const minor = [
+    {
+        translation: 'nav-imprint',
+        nav: {
+            name: 'imprint'
+        }
+    },
+    {
+        translation: 'nav-data-protection',
+        nav: {
+            name: 'dataprotection'
+        }
+    },
+    {
+        translation: 'nav-get-involved',
+        nav: {
+            name: 'get-involved'
+        }
+    }
+]
+
+export default { big, major, minor }

@@ -1,5 +1,6 @@
 <template>
   <div class="w-full">
+    <nuxt-content :document="content[0]" />
     <pre>{{ prettyfy(content) }}</pre>
     <pre>{{ prettyfy(data) }}</pre>
   </div>

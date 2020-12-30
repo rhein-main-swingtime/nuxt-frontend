@@ -26,9 +26,12 @@ export default {
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
             {
                 rel: 'stylesheet',
-                href: 'https://use.typekit.net/ifa6rbs.css'
+                href: 'https://use.typekit.net/etw5suf.css'
+            },
+            {
+                rel: 'stylesheet',
+                href: '//fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,700;1,400&family=Poiret+One&display=swap'
             }
-
         ]
     },
 
