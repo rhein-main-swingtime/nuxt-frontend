@@ -8,33 +8,17 @@
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 const defaultClasses = {
-    // 'animated-faster': true,
-    // 'bottom-0': true,
-    // 'flex-col': true,
-    // 'flex-wrap': true,
-    // 'font-serif': true,
-    'left-0': true,
     'bottom-0': true,
-    // 'p-4': true,
-    // 'pb-16': true,
-    // 'px-6': true,
-    // 'right-0': true,
-    'w-screen': true,
-    'sm:px-0': true,
-    'sm:h-screen': true,
-    // 'md:w-screen-sm': true,
-    'z-20': true,
-    // 'sm:place-content-center': true,
-    // 'place-items-end': true,
-    // 'sm:mx-7': true,
-    'h-auto': true,
-    'grid': true,
+    'fixed': true,
     'grid-cols-1': true,
     'grid-rows-1': true,
-    // 'justify-end': true,
-    // 'overflow-hidden': true
-    fixed: true,
-    // flex: true
+    'grid': true,
+    'h-auto': true,
+    'left-0': true,
+    'sm:h-screen': true,
+    'sm:px-0': true,
+    'w-screen': true,
+    'z-20': true,
 }
 
 @Component
