@@ -1,5 +1,5 @@
 <template>
-  <div id="page-nav-overlay" class="max-w-prose">
+  <div id="page-nav-overlay" class="max-w-screen-sm w-full px-4 flex flex-col sm:place-self-center place-self-end">
     <section v-for="(items, key) in NavigationItems" :key="key" class="pb-5 flex lg:hidden" :class="sectionClassBySection(key)">
       <nuxt-link
         v-for="(element, idx) in items"
@@ -13,7 +13,7 @@
         <span class="relative">{{ $t(element.translation) }}</span>
       </nuxt-link>
     </section>
-    <section class="flex flex-col fixed bottom-3 left-5 right-6 sm:static">
+    <section class="flex flex-col sm:fixed bottom-3 left-5 right-6 sm:static">
       <a
         class="close-bttn text-4xl font-thin text-center  relative rounded-lg border
         border-4 border-red-800 px-4 py-2 inline-block bg-red-600 relative "
