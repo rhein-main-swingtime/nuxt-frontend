@@ -1,5 +1,17 @@
 <template>
-  <div id="page-nav-overlay" class="max-w-screen-sm w-full px-4 flex flex-col sm:place-self-center place-self-end">
+  <div
+    id="page-nav-overlay"
+    class="
+      max-w-screen-sm
+      w-full
+      px-4
+      flex
+      flex-col
+      sm:place-self-center
+      place-self-end
+      text-white
+      "
+      >
     <section v-for="(items, key) in NavigationItems" :key="key" class="pb-5 flex lg:hidden" :class="sectionClassBySection(key)">
       <nuxt-link
         v-for="(element, idx) in items"

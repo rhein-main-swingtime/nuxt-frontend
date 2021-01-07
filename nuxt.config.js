@@ -59,7 +59,8 @@ export default {
             component: 'fa',
             icons: {
                 solid: true,
-                regular: true
+                regular: true,
+                brands: true
             }
         }]
     ],
@@ -124,8 +125,8 @@ export default {
 
     i18n: {
         locales: [
-            { code: 'en', iso: 'en-US', file: 'en-US.json', name: 'switch to English' },
-            { code: 'de', iso: 'de-DE', file: 'de-DE.json', name: 'zu Deutsch wechseln' }
+            { code: 'en', iso: 'en-US', file: 'en.json', name: 'switch to English' },
+            { code: 'de', iso: 'de-DE', file: 'de.json', name: 'zu Deutsch wechseln' }
         ],
         vueI18n: {
             dateTimeFormats: {

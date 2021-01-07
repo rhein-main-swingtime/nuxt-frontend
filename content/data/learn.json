@@ -5,7 +5,7 @@
         "category": "school",
         "contact": {
             "web": "https://monika-bauer.de",
-            "tel": "06930034634",
+            "tel": "069/30034634",
             "mail": "info@monika-bauer.de",
             "facebook": "https://www.facebook.com/Tanzschule-Monika-Bauer-162684157077418/"
         },
@@ -21,8 +21,7 @@
         "category": "school",
         "contact": {
             "web": "http://die-tanzschule.de",
-            "tel": "069302976",
-            "mail": "info@monika-bauer.de",
+            "tel": "069/302976",
             "facebook": "https://www.facebook.com/dieTanzschule.C.Weber",
             "instagram": "https://www.instagram.com/dietanzschule/",
             "youtube": "https://www.youtube.com/user/DieTanze"
@@ -38,8 +37,8 @@
         "city": "Friedrichsdorf",
         "category": "school",
         "contact": {
-            "web": "https://taktgefuehl.de/",
-            "tel": "061726895599",
+            "web": "https://taktgefuehl.de",
+            "tel": "06172/6895599",
             "mail": "hallo@taktgefühl.de",
             "facebook": "https://www.facebook.com/taktgefuehltanzschule"
         },
@@ -54,8 +53,8 @@
         "city": "Darmstadt",
         "category": "school",
         "contact": {
-            "web": "https://www.balboa-heiner.de/",
-            "tel": "01709074149",
+            "web": "https://www.balboa-heiner.de",
+            "tel": "0170/9074149",
             "mail": "info@balboa-heiner.de"
         },
         "address": [
@@ -68,8 +67,8 @@
         "city": "Frankfurt",
         "category": "school",
         "contact": {
-            "web": "https://www.sugarfootswing.de/de/",
-            "tel": "01709074149",
+            "web": "https://www.sugarfootswing.de",
+            "tel": "0170/9074149",
             "mail": "info@sugarfootswing.de"
         },
         "address": [
@@ -82,7 +81,7 @@
         "city": "Mainz",
         "category": "club",
         "contact": {
-            "web": "http://www.swing-tanzen.de/",
+            "web": "http://www.swing-tanzen.de",
             "facebook": "https://www.facebook.com/lindyhopmainz/"
         }
     },
@@ -91,7 +90,7 @@
         "city": "Offenbach",
         "category": "club",
         "contact": {
-            "web": "https://www.swingjets.de/",
+            "web": "https://www.swingjets.de",
             "facebook": "https://www.facebook.com/swingjets/",
             "instagram": "https://www.instagram.com/swingjets/",
             "youtube": "https://www.youtube.com/channel/UCyASsBHuqfq3_qvpm800lbw"
@@ -112,7 +111,7 @@
         "city": "Frankfurt",
         "category": "club",
         "contact": {
-            "web": "https://www.ftg-frankfurt.de/"
+            "web": "https://www.ftg-frankfurt.de"
         }
     },
     {
@@ -128,9 +127,9 @@
         "city": "Wiesbaden",
         "category": "school",
         "contact": {
-            "web": "https://www.tanzatelier.info/",
+            "web": "https://www.tanzatelier.info",
             "mail": "info@Tanzatelier.info",
-            "tel": "06119886858"
+            "tel": "0611/9886858"
         },
         "address": [
             "ADTV Tanzschule – Tanzatelier Ralf S.",
@@ -143,7 +142,7 @@
         "city": "Gießen",
         "category": "club",
         "contact": {
-            "web": "https://lindyhop-giessen.de/",
+            "web": "https://lindyhop-giessen.de",
             "mail": "info@lindyhop-giessen.de",
             "facebook": "https://www.facebook.com/lindyhopgiessen/"
         }
