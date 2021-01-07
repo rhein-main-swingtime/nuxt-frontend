@@ -1,7 +1,7 @@
 <template>
   <div
     class="
-      border inline-block pl-5 font-bold text-gray-500 pr-2 py-1 rounded-sm mr-2 mb-2 text-lg overflow-hidden transition-colors
+      border inline-block pl-5 text-sm sm:text-base font-bold text-gray-500 pr-2 py-1 rounded-sm mr-2 mb-2 overflow-hidden transition-colors
     "
     :class="buttonStyles"
     @click="handleClick()"
@@ -35,7 +35,7 @@ export default class ActivatorButton extends Vue {
 
     get iconClasses () {
         return [
-            'ml-1', 'inline-block', 'relative', 'top-0.5', 'bg-transparent', 'text-white', 'transition-opacity'
+            'ml-1', 'inline-block', 'relative', 'top-0.25', 'sm:top-0.5', 'bg-transparent', 'text-white', 'transition-opacity'
         ].concat(this.buttonActive ? ['opacity-100'] : ['opacity-0'])
     }
 

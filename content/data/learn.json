@@ -146,5 +146,45 @@
             "mail": "info@lindyhop-giessen.de",
             "facebook": "https://www.facebook.com/lindyhopgiessen/"
         }
+    },
+    {
+        "name": "Salty & Strick",
+        "city": "Frankfurt",
+        "category": "teacher",
+        "contact": {
+            "mail": "ausderzeitgefallen@gmail.com"
+        }
+    },
+    {
+        "name": "Diana & Michael",
+        "city": "Frankfurt",
+        "category": "teacher",
+        "contact": {
+            "facebook": "https://www.facebook.com/groups/495469870660120"
+        }
+    },
+    {
+        "name": "Goethe Uni",
+        "city": "Frankfurt",
+        "category": "uni",
+        "desc": {
+            "de": "Neue Kurse jedes Semester. Verfügbarkeit kann schwanken",
+            "en": "New class every semster, availability may vary."
+        },
+        "contact": {
+            "web": "https://zfh-db.sport.uni-frankfurt.de/angebote/aktueller_zeitraum/index.html"
+        }
+    },
+    {
+        "name": "TU Darmstadt",
+        "city": "Darmstadt",
+        "category": "uni",
+        "desc": {
+            "de": "Neue Kurse jedes Semester. Verfügbarkeit kann schwanken",
+            "en": "New class every semster, availability may vary."
+        },
+        "contact": {
+            "web": "https://online-anmeldung.usz.tu-darmstadt.de/sportarten/aktueller_zeitraum/index.html#bs_as"
+        }
     }
 ]

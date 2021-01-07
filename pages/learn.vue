@@ -1,8 +1,7 @@
 <template>
   <div class="w-full">
     <nuxt-content class="prose lg:prose-xl" :document="content" />
-
-    <div class="my-4 mb-2 border border-b-4 border-gray-100 sticky top-0 bg-gray-100 -ml-1 -mr-1 flex flex-row flex-wrap">
+    <div class="my-4 mb-2 border border-b-4 border-gray-100 md:sticky top-0 bg-gray-100 -ml-1 -mr-1 flex flex-row flex-wrap">
       <activator-button
         v-for="city in cities"
         :key="'learn-filter-button-' + city"
@@ -44,7 +43,6 @@ interface valueObject {
 
 @Component
 export default class LearnPage extends Vue {
-    // @Model('change', { type: Array }) checkedCities = []
     cities: string[] = []
     items: LearnCardPayload[] = []
     cityFilter = ''
