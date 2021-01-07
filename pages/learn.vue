@@ -11,9 +11,11 @@
         @activatorButtonChange="handleClick"
       >
         {{ city }}
+        ({{ cityCount(city) }})
       </activator-button>
     </div>
     <transition-group
+      id="learn-items"
       tag="div"
       mode="out-in"
       name="fade"
@@ -46,6 +48,7 @@ export default class LearnPage extends Vue {
     cities: string[] = []
     items: LearnCardPayload[] = []
     cityFilter = ''
+    scrollTimeout = null
 
     private prettyfy (data: any) {
         return JSON.stringify(data, null, 4)
@@ -63,8 +66,28 @@ export default class LearnPage extends Vue {
         )
     }
 
+    scrollToOptions () {
+        return {
+            offset: (document.getElementById('page-header')?.offsetHeight + 16) * -1 || 0
+        }
+    }
+
+    cityCount (city: string): number {
+        return this.items.filter(
+            (i) => {
+                return i.city === city
+            }
+        ).length
+    }
+
     handleClick (payload: ActivatorButtonEventPayloadInterface) {
         this.cityFilter = (payload.active ? payload.name : '')
+
+        const scroller = () => {
+            this.$scrollTo('#learn-items', 450, this.scrollToOptions())
+        }
+
+        this.scrollTimeout = setTimeout(scroller, 300)
     }
 
     // @see https://content.nuxtjs.org/

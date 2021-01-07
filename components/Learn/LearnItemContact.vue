@@ -5,28 +5,28 @@
     </h4>
     <div class="grid gap-2 gap-y-0" :class="contactContentClass">
       <div v-if="web">
-        <fa class="text-gray-400 text-sm" icon="link" />
-        <a :href="web">{{ webWithoutPrefix }}</a>
+        <span class="text-gray-400 text-sm inline-block w-5"><fa icon="link" /></span>
+        <a target="_blank" :href="web">{{ webWithoutPrefix }}</a>
       </div>
       <div v-if="tel">
-        <fa class="text-gray-400 text-sm" icon="phone" />
-        <a :href="telLink">{{ telText }}</a>
+        <span class="text-gray-400 text-sm inline-block w-5"><fa icon="phone" /></span>
+        <a target="_blank" :href="telLink">{{ telText }}</a>
       </div>
       <div v-if="mail">
-        <fa class="text-gray-400 text-sm" icon="envelope-open" />
-        <a :href="mailTo">{{ mail }}</a>
+        <span class="text-gray-400 text-sm inline-block w-5"><fa icon="envelope-open" /></span>
+        <a target="_blank" @click="openMail">{{ mailEncoded }}</a>
       </div>
       <div v-if="facebook">
-        <fa class="text-gray-400 text-sm" :icon="['fab', 'facebook-f']" />
-        <a :href="facebook">Facebook</a>
+        <span class="text-gray-400 text-sm inline-block w-5"><fa :icon="['fab', 'facebook-f']" /></span>
+        <a target="_blank" :href="facebook">Facebook</a>
       </div>
       <div v-if="instagram">
-        <fa class="text-gray-400 text-sm" :icon="['fab', 'instagram']" />
-        <a :href="instagram">Instagram</a>
+        <span class="text-gray-400 text-sm inline-block w-5"><fa :icon="['fab', 'instagram']" /></span>
+        <a target="_blank" :href="instagram">Instagram</a>
       </div>
       <div v-if="youtube">
-        <fa class="text-gray-400 text-sm" :icon="['fab', 'youtube']" />
-        <a :href="youtube">Youtube</a>
+        <span class="text-gray-400 text-sm inline-block w-5"><fa :icon="['fab', 'youtube']" /></span>
+        <a target="_blank" :href="youtube">Youtube</a>
       </div>
     </div>
   </div>
@@ -34,6 +34,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
+// import { encodeEmail, decodeEmail } from '~/helpers/EmailHelpers'
 
 @Component
 export default class LearnItemContact extends Vue {
@@ -79,10 +80,13 @@ export default class LearnItemContact extends Vue {
         return pretty.slice(0, maxLength) + '...'
     }
 
-    get mailTo () {
-        if (this.mail) {
-            return 'mailto://' + this.mail
-        }
+    get mailEncoded () {
+        const [user, domain] = this.mail?.split('@')
+        return user.slice(0, 3) + '...(at)' + domain
+    }
+
+    openMail () {
+        window.open('mailto:' + this.mail, '_blank')
     }
 
     get telLink () {

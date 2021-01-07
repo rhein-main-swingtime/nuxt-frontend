@@ -2,7 +2,10 @@
   <div
     id="app-container"
     class="text-gray-900 antialiased font-serif
-      w-full max-w-screen-lg"
+      w-full max-w-screen-lg
+      pb-32 pt-9 sm:pt-12
+      lg:mx-auto
+      "
   >
     <!--
      ██████╗ ██████╗ ███╗   ██╗████████╗███████╗███╗   ██╗████████╗
@@ -49,7 +52,7 @@
         {{ $t('site-claim') }}
       </h3>
       <!-- main content -->
-      <section id="main-content" class="flex w-full py-3 px-3 md:col-span-9">
+      <section id="main-content" class="flex w-full px-3 md:col-span-9">
         <Nuxt keep-alive :keep-alive-props="{ include: ['DanceEventsPage'] }" />
       </section>
     </div>
@@ -110,7 +113,7 @@ export default class DefaultPageLayout extends Vue {
     data () {
         return {
             dances: [
-                'Swing Tanzen', 'Balboa', 'Slow Bal', 'Lindy Hop', 'Collegiate Shag'
+                'Swing Tanzen', 'Balboa', 'Slow Bal', 'Lindy Hop', 'Collegiate Shag', 'Charleston'
             ],
             cities: [
                 'Rhein Main', 'Frankfurt', 'Offenbach', 'Mainz', 'Wiesbaden', 'Darmstadt', 'Gießen'

@@ -1,7 +1,8 @@
 <template>
   <div
     class="
-      border inline-block pl-5 text-sm sm:text-base font-bold text-gray-500 pr-2 py-1 rounded-sm mr-2 mb-2 overflow-hidden transition-colors
+      border inline-block pl-5 text-sm sm:text-base sm:text-bold pr-2 py-1
+      rounded-sm mr-2 mb-2 overflow-hidden transition-colors
     "
     :class="buttonStyles"
     @click="handleClick()"
@@ -64,7 +65,6 @@ export default class ActivatorButton extends Vue {
             'border-teal-600': this.buttonActive,
             'bg-gray-100': !this.buttonActive,
             'bg-teal-400': this.buttonActive,
-            'font-bold': this.buttonActive,
             'text-white': this.buttonActive,
             'text-current': !this.buttonActive
         }
