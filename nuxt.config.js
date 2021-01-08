@@ -19,7 +19,7 @@ export default {
         title: 'frontend-nuxtjs',
         meta: [
             { charset: 'utf-8' },
-            { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+            { name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no' },
             { hid: 'description', name: 'description', content: '' }
         ],
         link: [
@@ -27,11 +27,11 @@ export default {
             {
                 rel: 'stylesheet',
                 href: 'https://use.typekit.net/etw5suf.css'
-            },
-            {
-                rel: 'stylesheet',
-                href: '//fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,700;1,400&family=Poiret+One&display=swap'
-            }
+            } //,
+            // {
+            //     rel: 'stylesheet',
+            //     href: '//fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,700;1,400&family=Poiret+One&display=swap'
+            // }
         ]
     },
 
@@ -59,7 +59,8 @@ export default {
             component: 'fa',
             icons: {
                 solid: true,
-                regular: true
+                regular: true,
+                brands: true
             }
         }]
     ],
@@ -124,8 +125,8 @@ export default {
 
     i18n: {
         locales: [
-            { code: 'en', iso: 'en-US', file: 'en-US.json', name: 'switch to English' },
-            { code: 'de', iso: 'de-DE', file: 'de-DE.json', name: 'zu Deutsch wechseln' }
+            { code: 'en', iso: 'en-US', file: 'en.json', name: 'switch to English' },
+            { code: 'de', iso: 'de-DE', file: 'de.json', name: 'zu Deutsch wechseln' }
         ],
         vueI18n: {
             dateTimeFormats: {

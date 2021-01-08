@@ -59,7 +59,7 @@ export default class NavigationTrigger extends Vue {
     left: 50%;
     margin-left: -2.5rem;
     // transform: translateX(-50%);
-    box-shadow: 0px 0px 5px 5px theme('colors.gray.700');
+    box-shadow: 0px 0px 5px 2px theme('colors.gray.500');
     animation-duration: 550ms;
     transition: background-color 330ms;
   }

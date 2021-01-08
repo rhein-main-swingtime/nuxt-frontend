@@ -2,6 +2,7 @@ const colors = require('tailwindcss/colors')
 
 module.exports =
 {
+    darkMode: 'media',
     future: {
         removeDeprecatedGapUtilities: true,
         purgeLayersByDefault: true
@@ -10,7 +11,8 @@ module.exports =
         fontFamily: {
             // serif: ['vollkorn', 'sans-serif'],
             sans: ['mostra-nuova', 'sans-serif'],
-            serif: ['Cormorant Garamond', 'sans-serif']
+            // serif: ['Cormorant Garamond', 'sans-serif']
+            serif: ['futura-pt', 'sans-serif']
             // sans: ['Poiret One', 'sans-serif']
         },
         plugins: [require('@tailwindcss/typography')],
