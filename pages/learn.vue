@@ -20,6 +20,7 @@
       mode="out-in"
       name="fade"
       duration="300ms"
+      class=""
     >
       <learn-item
         v-for="(item) in visibleItems"
@@ -38,6 +39,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { LearnCardPayload } from '~/types/LearnTypes'
+import { ActivatorButtonEventPayloadInterface } from '~/types/ActivatorButton'
 
 interface valueObject {
   [key: string]: Boolean
@@ -48,7 +50,7 @@ export default class LearnPage extends Vue {
     cities: string[] = []
     items: LearnCardPayload[] = []
     cityFilter = ''
-    scrollTimeout = null
+    scrollTimeout!: null | NodeJS.Timeout
 
     private prettyfy (data: any) {
         return JSON.stringify(data, null, 4)
@@ -66,9 +68,9 @@ export default class LearnPage extends Vue {
         )
     }
 
-    scrollToOptions () {
+    scrollToOptions (element: HTMLElement) {
         return {
-            offset: (document.getElementById('page-header')?.offsetHeight + 16) * -1 || 0
+            offset: (element.offsetHeight + 16) * -1 || 0
         }
     }
 
@@ -83,11 +85,13 @@ export default class LearnPage extends Vue {
     handleClick (payload: ActivatorButtonEventPayloadInterface) {
         this.cityFilter = (payload.active ? payload.name : '')
 
-        const scroller = () => {
-            this.$scrollTo('#learn-items', 450, this.scrollToOptions())
+        const targetElement = document.getElementById('page-header')
+        if (targetElement) {
+            const scroller = () => {
+                this.$scrollTo('#learn-items', 450, this.scrollToOptions(targetElement))
+            }
+            this.scrollTimeout = setTimeout(scroller, 300)
         }
-
-        this.scrollTimeout = setTimeout(scroller, 300)
     }
 
     // @see https://content.nuxtjs.org/

@@ -1,5 +1,10 @@
 <template>
   <div class="w-full">
+    <div
+      id="homepage-hero"
+      class="relative h-64 bg-gray-200 w-full shadow-inner rounded-lg -ml-7"
+    />
+
     <section id="intro-content" class="has-bg relative z-1 overflow-hidden bg-fixed">
       <article id="intro-content-copy" class="prose prose-xl default-content-container">
         <nuxt-content :document="page" />

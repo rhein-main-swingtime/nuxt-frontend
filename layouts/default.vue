@@ -5,6 +5,7 @@
       w-full max-w-screen-lg
       pb-32 pt-9 sm:pt-12
       lg:mx-auto
+      md:px-5
       "
   >
     <!--
@@ -15,7 +16,7 @@
     ╚██████╗╚██████╔╝██║ ╚████║   ██║   ███████╗██║ ╚████║   ██║
      ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═══╝   ╚═╝
                                                                       -->
-    <div id="content-container" class="flex flex-col md:grid md:grid-cols-12 md:gap-4">
+    <div id="content-container" class="flex flex-col lg:grid grid-cols-12 gap-4">
       <page-header />
       <!-- Random Stuff -->
       <h2
@@ -87,9 +88,9 @@
       <div
         v-if="pageNavActive"
         id="mobile-nav-middle-layer"
-        class="z-10 fixed top-0 left-0 h-screen w-screen"
+        class="z-10 fixed top-0 left-0 h-screen w-screen bg-black bg-opacity-80"
       >
-        <div class="bg-black opacity-70 absolute top-0 left-0 h-full w-full" />
+        <!-- <div class="bg-black opacity-70 absolute top-0 left-0 h-full w-full" /> -->
       </div>
     </transition>
     <transition
