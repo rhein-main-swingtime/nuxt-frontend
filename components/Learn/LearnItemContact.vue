@@ -81,7 +81,7 @@ export default class LearnItemContact extends Vue {
     }
 
     get mailEncoded () {
-        const [user, domain] = this.mail?.split('@')
+        const [user, domain] = this.mail?.split('@') || ''
         return user.slice(0, 3) + '...(at)' + domain
     }
 

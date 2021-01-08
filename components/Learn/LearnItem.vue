@@ -1,7 +1,7 @@
 <template>
   <article
     name="learn-item"
-    class="border border-gray-400 mb-4 shadow-md p-4 grid grid-cols-12 gap-4 bg-white"
+    class="border border-gray-400 mb-4 shadow-md p-4 grid grid-cols-12 gap-4 bg-white lg:h-80"
   >
     <div class="col-span-12 my-8 text-center font-sans">
       <h3 class="">
@@ -47,6 +47,7 @@
 </template>
 
 <script lang="ts">
+import { isObject, isString } from 'lodash'
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import { LearnCardPayload } from '~/types/LearnTypes'
 
@@ -60,11 +61,14 @@ export default class LearnItem extends Vue {
     @Prop([Array]) readonly address!: string[] | null
     @Prop(Object) readonly contact! : LearnCardPayload['contact']
 
-    get descLocalized (): String {
-        if (!this.desc) {
-            return ''
+    get descLocalized (): string | null {
+        if (isObject(this.desc) && this.desc[this.$i18n.locale]) {
+            return this.desc[this.$i18n.locale]
+        } else if (isString(this.desc)) {
+            return this.desc
         }
-        return this.desc[this.$i18n.locale] ?? this.desc
+
+        return null
     }
 
     get addressDivClass () {

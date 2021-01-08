@@ -15,11 +15,6 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'nuxt-property-decorator'
 
-export interface ActivatorButtonEventPayloadInterface {
-  name: string,
-  active: Boolean
-}
-
 @Component
 export default class ActivatorButton extends Vue {
     @Prop(String) readonly buttonLabel!: string | null

@@ -11,14 +11,14 @@
       place-self-end
       text-white
       "
-      >
+  >
     <section v-for="(items, key) in NavigationItems" :key="key" class="pb-5 flex lg:hidden" :class="sectionClassBySection(key)">
       <nuxt-link
         v-for="(element, idx) in items"
         :key="'page-link-'+idx"
         :to="localePath(element.nav)"
         class="font-thin relative rounded-lg
-           border-teal-300 place-content-center"
+           border-teal-300 place-content-center relative"
         :class="itemClassBySection(key)"
         :title="$t(element.translation)"
         @click.native="closeNavOverlay()"
@@ -52,10 +52,10 @@ export default class PageNav extends Vue {
 
   itemClassBySection (sectionName: string): Array<String> {
       if (sectionName === 'big') {
-          return ['text-4xl', 'py-2', 'text-center', 'border', 'border-4', ' mb-3', 'px-2', 'sm:text-5xl', 'sm:py-4']
+          return ['text-4xl', 'py-2', 'text-center', 'border', 'border-4', ' mb-3', 'px-2', 'sm:text-5xl', 'sm:py-4', 'bg-opacity-20', 'bg-black']
       }
       if (sectionName === 'major') {
-          return ['text-2xl', 'py-1', 'text-center', 'border', 'border-4', 'px-4', 'sm:text-3xl', 'sm:py-4']
+          return ['text-2xl', 'py-1', 'text-center', 'border', 'border-4', 'px-4', 'sm:text-3xl', 'sm:py-4', 'bg-opacity-20', 'bg-black']
       }
       return ['text-lg', 'py-1', 'inline', 'mr-2', 'sm:text-2xl']
   }
