@@ -1,7 +1,7 @@
 <template>
-  <article
+  <rms-card
     name="learn-item"
-    class="border border-gray-400 mb-4 shadow-md p-4 grid grid-cols-12 gap-4 bg-white lg:h-80"
+    :class="['grid' ,'grid-cols-12', 'gap-4']"
   >
     <div class="col-span-12 my-8 text-center font-sans">
       <h3 class="">
@@ -43,7 +43,7 @@
         <a :href="mapLink">{{ $t('page-learn-route') }}</a>
       </div>
     </div>
-  </article>
+  </rms-card>
 </template>
 
 <script lang="ts">

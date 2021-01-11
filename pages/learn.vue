@@ -6,7 +6,7 @@
         v-for="city in cities"
         :key="'learn-filter-button-' + city"
         :button-label="city"
-        :button-active="cityFilter === city"
+        :button-active="isCitySelected(city)"
         :button-enabled="true"
         @activatorButtonChange="handleClick"
       >
@@ -33,11 +33,18 @@
         :contact="item.contact"
       />
     </transition-group>
+
+    <info-box v-if="visibleItems.length === 0" class="text-xl p-8">
+      Ooops. Da ist etwas schief gegangen. Versuche es doch einfach mal <nuxt-link to="./">
+        hier
+      </nuxt-link>
+    </info-box>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import { isEmpty, toLower } from 'lodash'
 import { LearnCardPayload } from '~/types/LearnTypes'
 import { ActivatorButtonEventPayloadInterface } from '~/types/ActivatorButton'
 
@@ -49,7 +56,7 @@ interface valueObject {
 export default class LearnPage extends Vue {
     cities: string[] = []
     items: LearnCardPayload[] = []
-    cityFilter = ''
+    cityFilter: string | null = ''
     scrollTimeout!: null | NodeJS.Timeout
 
     private prettyfy (data: any) {
@@ -63,14 +70,29 @@ export default class LearnPage extends Vue {
     get visibleItems (): LearnCardPayload[] {
         return this.items.filter(
             (i) => {
-                return this.cityFilter === i.city || this.cityFilter === ''
+                return isEmpty(this.cityFilter) || this.cityFilter === toLower(i.city)
             }
         )
     }
 
-    scrollToOptions (element: HTMLElement) {
+    isCitySelected (city: string) {
+        city = toLower(city)
+
+        if (isEmpty(this.cityFilter)) {
+            return false
+        }
+        return this.cityFilter === city
+    }
+
+    scrollToOptions (element: HTMLElement | null) {
+        let offsetValue = 0
+
+        if (element !== null) {
+            offsetValue = (element.offsetHeight + 16) * -1
+        }
+
         return {
-            offset: (element.offsetHeight + 16) * -1 || 0
+            offset: offsetValue
         }
     }
 
@@ -83,12 +105,21 @@ export default class LearnPage extends Vue {
     }
 
     handleClick (payload: ActivatorButtonEventPayloadInterface) {
-        this.cityFilter = (payload.active ? payload.name : '')
+        if (payload.active) {
+            const name = toLower(payload.name)
+            this.cityFilter = name
+            history.replaceState(null, '', name)
+        } else {
+            history.replaceState(null, '', './')
+            this.cityFilter = null
+        }
 
         const targetElement = document.getElementById('page-header')
+
+        // @ todo make this work on mobile
         if (targetElement) {
             const scroller = () => {
-                this.$scrollTo('#learn-items', 450, this.scrollToOptions(targetElement))
+                this.$scrollTo('#learn-items', 450, this.scrollToOptions(targetElement || null))
             }
             this.scrollTimeout = setTimeout(scroller, 300)
         }
@@ -114,6 +145,14 @@ export default class LearnPage extends Vue {
         this.cities = this.getDistinct(
             this.items.map((i: {city: String}) => i.city.toString())
         ).sort()
+    }
+
+    mounted () {
+        if (this.$route.params.city) {
+            this.cityFilter = this.$route.params.city
+        } else {
+            this.cityFilter = null
+        }
     }
 }
 </script>

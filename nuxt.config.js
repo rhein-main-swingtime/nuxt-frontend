@@ -89,8 +89,8 @@ export default {
                     en: '/en/'
                 },
                 learn: {
-                    de: '/lernen',
-                    en: '/learn'
+                    de: '/lernen/:city?',
+                    en: '/learn/:city?'
                 },
                 music: {
                     de: '/musik',
@@ -103,6 +103,10 @@ export default {
                 dance: {
                     de: '/tanzen',
                     en: '/dance'
+                },
+                credits: {
+                    de: '/credits',
+                    en: '/credits'
                 }
             },
             lazy: true,
