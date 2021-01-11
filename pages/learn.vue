@@ -33,6 +33,11 @@
         :contact="item.contact"
       />
     </transition-group>
+
+    <info-box v-if="visibleItems.length === 0" class="text-xl p-8">
+        Ooops. Da ist etwas schief gegangen. Versuche es doch einfach mal <nuxt-link to="./">hier</nuxt-link>
+    </info-box>
+
   </div>
 </template>
 
