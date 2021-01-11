@@ -35,9 +35,10 @@
     </transition-group>
 
     <info-box v-if="visibleItems.length === 0" class="text-xl p-8">
-        Ooops. Da ist etwas schief gegangen. Versuche es doch einfach mal <nuxt-link to="./">hier</nuxt-link>
+      Ooops. Da ist etwas schief gegangen. Versuche es doch einfach mal <nuxt-link to="./">
+        hier
+      </nuxt-link>
     </info-box>
-
   </div>
 </template>
 
@@ -84,11 +85,14 @@ export default class LearnPage extends Vue {
     }
 
     scrollToOptions (element: HTMLElement | null) {
-        if (!element) {
-            return 0
+        let offsetValue = 0
+
+        if (element !== null) {
+            offsetValue = (element.offsetHeight + 16) * -1
         }
+
         return {
-            offset: (element.offsetHeight + 16) * -1
+            offset: offsetValue
         }
     }
 
@@ -111,7 +115,7 @@ export default class LearnPage extends Vue {
         }
 
         const targetElement = document.getElementById('page-header')
-    console.log(this.scrollToOptions(targetElement || null))
+
         // @ todo make this work on mobile
         if (targetElement) {
             const scroller = () => {
