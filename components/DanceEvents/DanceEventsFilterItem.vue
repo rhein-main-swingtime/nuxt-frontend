@@ -1,40 +1,61 @@
 <template>
   <fieldset>
     <label
-      :for="filterItem + '-filter'"
+      :for="filterName + '-filter'"
       @click="toggleValue()"
     >
       <input
         type="checkbox"
-        :name="filterItem + '-filter'"
+        :name="filterName + '-filter'"
         :checked="isChecked"
+        :disabled="isDisabled"
       >
-      {{ $t(filterItem) }}
+      {{ $t(filterName) }}
+      <span v-if="!isChecked">({{ count }})</span>
     </label>
   </fieldset>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, getModule } from 'nuxt-property-decorator'
-import DanceEventsModule from '../../store/modules/DanceEventsModule'
+import { Component, Prop, Vue } from 'nuxt-property-decorator'
+
 @Component
 export default class DanceEventsFilterItem extends Vue {
-    @Prop({ required: true }) filterItem!: string
-    @Prop({ required: true }) filterCategory!: string
-
-    DanceEventsStoreInstance: DanceEventsModule = getModule(DanceEventsModule, this.$store)
+    // DanceEventsStoreInstance: DanceEventsModule = getModule(DanceEventsModule, this.$store)
+    @Prop(String) readonly filterName!: string
+    @Prop(String) readonly filterCategory!: string
+    @Prop(Object) readonly filterValues!: {
+      active: boolean,
+      count: null | number
+    }
 
     get isChecked () {
-        return this.DanceEventsStoreInstance.filters![this.filterCategory]![this.filterItem]
+        if (this.filterValues === null) {
+            return false
+        }
+        return this.filterValues!.active ?? false
+    }
+
+    get count () {
+        if (this.filterValues === null) {
+            return 0
+        }
+        return this.filterValues!.count ?? 0
+    }
+
+    get isDisabled () {
+        return !this.filterValues!.count
     }
 
     toggleValue () {
         const payload = {
             [this.filterCategory]: {
-                [this.filterItem]: !this.isChecked
+                [this.filterName]: {
+                    active: !this.isChecked
+                }
             }
         }
-        this.DanceEventsStoreInstance.updateFilter(payload)
+        this.$emit('filter:update', payload)
     }
 }
 </script>

@@ -30,6 +30,7 @@
     "nuxt": "^2.14.6",
     "nuxt-i18n": "^6.15.1",
     "nuxt-property-decorator": "^2.8.8",
+    "v-calendar": "^2.2.0",
     "vue-in-viewport-mixin": "^2.0.1",
     "vue-infinite-loading": "^2.4.5",
     "vue-scrollto": "^2.20.0",

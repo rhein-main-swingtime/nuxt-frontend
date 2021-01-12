@@ -1,43 +1,36 @@
 <template>
-  <section>
-    <article class="dance-event w-full mb-8 border-gray-500 grid grid-cols-12">
-      <div name="ticket-content" class="shadow-hard col-span-11 grid grid-cols-12 flex-grow rounded-r-lg border-r-0 bg-gray-700 border">
-        <div class="col-span-6  px-4 py-1 uppercase text-gray-300 align-middle">
-          <span class="text-xl font-bold">
-            {{ startDateComputed }} {{ startTime }}
-          </span>
-        </div>
-        <div class="col-span-6 text-right border-l border-gray-400 px-2 px-4 py-1 align-middle">
-          <span class="font-bold uppercase text-sm align-middle">{{ city }}</span>
-        </div>
-        <!-- Summary -->
-        <div
-          name="summary"
-          class="pt-6 pb-8 px-3 text-center text-white col-span-12 relative border-gray-400 border-t border-b font-light font-sans relative"
-        >
-          <div class="text-2xl md:text-4xl ">
-            <a href="#">{{ summary }}</a>
-          </div>
-          <div class="uppercase text-lg md:text-xl" name="event-type">
-            &loz; {{ $t('dance-event-category-' + category) }} &loz;
-          </div>
-          <!-- Stub -->
-          <div class="absolute bottom-0 right-0 mb-1 px-2">
-            <span class="text-4xl uppercase opacity-10 font-serif">[&nbsp;{{ stub }}&nbsp;]</span>
-          </div>
-        </div>
-        <!-- Calendar -->
-        <div name="calendar" class="col-span-12 uppercase px-2 py-1 font-bold text-md text-center opacity-75">
-          &mdash;&nbsp;{{ calendar }}&nbsp;&mdash;
-        </div>
+  <rms-card class="grid grid-cols-12">
+    <div class="col-span-6  px-1 py-1 align-middle">
+      {{ startDateComputed }} {{ $t('page-dance-event-item-time-from') }} {{ startTime }}
+    </div>
+    <div class="col-span-6 text-right py-1 px-1 align-middle">
+      {{ city }}
+    </div>
+    <div
+      name="summary"
+      class="pt-6 pb-8 px-1 text-center col-span-12 font-light font-sans relative"
+    >
+      <div class="uppercase text-lg md:text-xl" name="event-type">
+        &mdash; {{ $t('dance-event-category-' + category) }} &mdash;
       </div>
-      <div name="stub" class="shadow-hard border-l-dashed uppercase bg-gray-700 col-span-1 flex items-center justify-center overflow-hidden rounded-l-lg border">
-        <span class="inline-block font-bold text-2xl transform rotate-90">
-          {{ $t("page-dance-events-open-event") }}
-        </span>
+      <div class="text-2xl md:text-4xl ">
+        <a href="#">{{ summary }}</a>
       </div>
-    </article>
-  </section>
+      <div class="absolute bottom-0 right-0 mb-1 px-2">
+
+      </div>
+    </div>
+    <div name="calendar" class="col-span-12 px-4 py-1  text-md text-center opacity-75">
+      &mdash;&nbsp;{{ calendar }}&nbsp;&mdash;
+    </div>
+    <div class="col-span-12 px-1 py-1 text-right relative">
+      <span class="text-xl uppercase opacity-10 font-serif absolute left-0">[&nbsp;{{ stub }}&nbsp;]</span>
+      <a href="#" class="border-teal-500 bg-teal-300 border-2 px-2 py-1 rounded-sm no-underline">
+        Besuchen
+        <fa icon="chevron-right" />
+      </a>
+    </div>
+  </rms-card>
 </template>
 
 <script lang="ts">

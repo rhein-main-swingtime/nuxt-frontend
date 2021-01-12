@@ -3,7 +3,7 @@ import _ from 'lodash'
 import {
     DanceEventsCollection as DanceEventsByDatesCollection,
     DanceEventPayloadItem,
-    DanceEventsFilterInterface,
+    DanceEventsFiltersInterface,
     danceEventsApiResponseInterface
 } from '../../types/DanceEvent'
 import { $axios } from '~/utils/api'
@@ -18,28 +18,28 @@ function isFilterInUrl (category: string, filterName: string, url: string): bool
 
 @Module({
     name: 'modules/DanceEventsModule',
-    stateFactory: false,
+    stateFactory: true,
     namespaced: true
 })
 export default class DanceEventsModule extends VuexModule {
     searchParams: null | string = null
     dates: DanceEventsByDatesCollection = []
     danceEvents: {[key: number]: DanceEventPayloadItem} | null = null
-    filters: null | DanceEventsFilterInterface = null
+    filters: DanceEventsFiltersInterface | null = {}
     eventsLoading: boolean | null = null
     moreEventsAvailable: boolean = false
     numberOfEvents = 0
 
-    get routeQuery (): null | string {
+    get routeQuery (): string {
         if (this.filters === null) {
-            return null
+            return ''
         }
 
         const queryParts = []
 
         for (const [category, filters] of Object.entries(this.filters)) {
             for (const [filter, value] of Object.entries(filters)) {
-                if (value === true) {
+                if (value.active === true) {
                     queryParts.push(encodeURI(category) + '[]=' + encodeURI(filter))
                 }
             }
@@ -53,33 +53,34 @@ export default class DanceEventsModule extends VuexModule {
             return false
         }
 
-        for (const prop in this.filters) {
-            if (Object.values(this.filters[prop]).includes(true)) {
+        Object.values(this.filters).forEach((section) => {
+            const activeNum = Object.values(section).filter(item => item.active).length
+            if (activeNum > 0) {
                 return true
             }
-        }
+        })
 
         return false
     }
 
-    @MutationAction({ mutate: ['filters'] })
-    async fetchFilters (params: { ['host']: string, ['search']: string }) {
-        return await $axios.get(params.host + 'filters')
-            .then(response => response.data)
-            .then((payload: {[key: string]: Array<string>}) => {
-                const filters = {} as DanceEventsFilterInterface
+    // @MutationAction({ mutate: ['filters'] })
+    // async fetchFilters (params: { ['host']: string, ['search']: string }) {
+    //     return await $axios.get(params.host + 'filters')
+    //         .then(response => response.data)
+    //         .then((payload: {[key: string]: Array<string>}) => {
+    //             const filters = {} as DanceEventsFiltersInterface
 
-                for (const [category, entries] of Object.entries(payload)) {
-                    filters[category] = {}
+    //             for (const [category, entries] of Object.entries(payload)) {
+    //                 filters[category] = {}
 
-                    entries.forEach((entry) => {
-                        filters[category][entry] = isFilterInUrl(category, entry, params.search)
-                    })
-                }
+    //                 entries.forEach((entry) => {
+    //                     filters[category][entry] = isFilterInUrl(category, entry, params.search)
+    //                 })
+    //             }
 
-                return { filters }
-            })
-    }
+    //             return { filters }
+    //         })
+    // }
 
     @Mutation
     updateFilter (payload: any) {
@@ -88,12 +89,15 @@ export default class DanceEventsModule extends VuexModule {
 
     @Mutation
     resetFilters () {
-        const resetFilters = {} as DanceEventsFilterInterface
+        const resetFilters: DanceEventsFiltersInterface = {}
 
         for (const [category, filters] of Object.entries(this.filters || {})) {
             resetFilters[category] = {}
             Object.keys(filters).forEach((name) => {
-                resetFilters[category][name] = false
+                resetFilters[category][name] = {
+                    active: false,
+                    count: null
+                }
             })
         }
 
@@ -126,6 +130,10 @@ export default class DanceEventsModule extends VuexModule {
         this.dates = _.merge(this.dates, datesCollection)
     }
 
+    @Mutation setFilters (filters: DanceEventsFiltersInterface) {
+        this.filters = filters
+    }
+
     @Mutation setNumberOfEvents (value: number) {
         this.numberOfEvents = value
     }
@@ -135,16 +143,17 @@ export default class DanceEventsModule extends VuexModule {
     }
 
     @Action
-    async fetchEvents (params: { ['host']: string, ['search']: string, ['skip']: number }) {
+    async fetchEvents (params: { ['host']: string, ['skip']: number }) {
         this.toggleEventsLoading(true)
         this.toggleMoreEventsAvailable(false)
+        let search = this.routeQuery
 
         if (params.skip) {
-            const prefix = (params.search === '' ? '?' : '&')
-            params.search += prefix + 'skip=' + params.skip
+            const prefix = (search === '' ? '?' : '&')
+            search += prefix + 'skip=' + params.skip
         }
 
-        return await $axios.get(params.host + 'events' + params.search)
+        return await $axios.get(params.host + 'events' + search)
             .then(response => response.data)
             .then((payload: danceEventsApiResponseInterface) => {
                 const append = (params.skip > 0 && this.numberOfEvents > 0)
@@ -163,6 +172,8 @@ export default class DanceEventsModule extends VuexModule {
                     this.setDates(payload.dates)
                     this.setNumberOfEvents(_.size(payload.danceEvents))
                 }
+
+                this.setFilters(payload.filters)
 
                 this.toggleEventsLoading(false)
                 this.toggleMoreEventsAvailable(Object.keys(payload.danceEvents).length === 25)

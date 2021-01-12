@@ -43,6 +43,7 @@ export default {
     // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
     plugins: [
         '~/plugins/axios-accessor.ts',
+        { src: '~/plugins/v-calendar', ssr: false },
         { src: '~/plugins/infiniteLoading', ssr: false }
     ],
 
@@ -145,6 +146,9 @@ export default {
                     shortTime: {
                         hour: 'numeric',
                         minute: 'numeric'
+                    },
+                    onlyMonth: {
+                        month: 'long'
                     }
                 }
             }

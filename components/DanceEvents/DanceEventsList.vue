@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import { Component, getModule, Vue, Watch } from 'nuxt-property-decorator'
+import { Component, getModule, Vue } from 'nuxt-property-decorator'
 import _ from 'lodash'
 import DanceEventsModule from '../../store/modules/DanceEventsModule'
 
@@ -89,7 +89,6 @@ export default class DanceEventsList extends Vue {
         this.DanceEventsStoreInstance.fetchEvents(
             {
                 host: this.$config.apiHost,
-                search: this.eventsApiQuery,
                 skip: this.numberOfEvents
             }
         ).then(() => {

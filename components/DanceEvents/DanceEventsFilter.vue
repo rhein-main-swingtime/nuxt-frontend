@@ -1,8 +1,9 @@
 <template>
-  <nav class="bg-gray-700 border-gray-300 border rounded-tl-lg shadow-hard mt-10" id="dance-page-filters">
+  <nav id="dance-page-filters" class="border-gray-300 border rounded-tl-lg mt-10">
     <h2 v-if="title" class="text-2xl font-sans font-bold px-2 py-3">
       <fa icon="filter" /> {{ title }}
     </h2>
+
     <section v-for="(filterItems, filterCategory) in filters" :key="filterCategory.categoryName" class="flex filter-section border-t border-gray-400">
       <div class="w-full mb-5 p-2">
         <h5 class="font-bold text-xl">
@@ -10,10 +11,12 @@
         </h5>
         <form>
           <DanceEventsFilterItem
-            v-for="(active, filterItem) in filterItems"
-            :key="'dance-event-filter-' + filterItem"
+            v-for="(filterValues, filterName) in filterItems"
+            :key="'dance-event-filter-' + filterName"
             :filter-category="filterCategory"
-            :filter-item="filterItem"
+            :filter-name="filterName"
+            :filter-values="filterValues"
+            @filter:update="handleFilterUpdate"
           />
         </form>
       </div>
@@ -25,17 +28,16 @@
 </template>
 
 <script lang="ts">
-import { Component, getModule, Prop, Vue, Watch } from 'nuxt-property-decorator'
+import { Component, getModule, Prop, Vue } from 'nuxt-property-decorator'
 import DanceEventsModule from '../../store/modules/DanceEventsModule'
 
 @Component
 export default class DanceEventsFilter extends Vue {
     DanceEventsStoreInstance: DanceEventsModule = getModule(DanceEventsModule, this.$store)
-
     @Prop(String) title: String | undefined
 
     get filters () {
-        return this.DanceEventsStoreInstance.filters || []
+        return this.DanceEventsStoreInstance.filters
     }
 
     get filtersAreActive () {
@@ -46,25 +48,30 @@ export default class DanceEventsFilter extends Vue {
         this.DanceEventsStoreInstance.resetFilters()
     }
 
-    // When using the nav to switch between socials + class only route updates happens
-    @Watch('$route')
-    routeWatcher () {
-        this.DanceEventsStoreInstance.fetchFilters(
-            {
-                host: this.$config.apiHost,
-                search: window.location.search
-            }
-        )
+    private handleFilterUpdate (payload: object) {
+        console.log(payload)
+        this.DanceEventsStoreInstance.updateFilter(payload)
     }
 
-    mounted () {
-        this.DanceEventsStoreInstance.fetchFilters(
-            {
-                host: this.$config.apiHost,
-                search: window.location.search
-            }
-        )
-    }
+    // When using the nav to switch between socials + class only route updates happens
+    // @Watch('$route')
+    // routeWatcher () {
+    //     this.DanceEventsStoreInstance.fetchFilters(
+    //         {
+    //             host: this.$config.apiHost,
+    //             search: window.location.search
+    //         }
+    //     )
+    // }
+
+    // mounted () {
+    //     this.DanceEventsStoreInstance.fetchFilters(
+    //         {
+    //             host: this.$config.apiHost,
+    //             search: window.location.search
+    //         }
+    //     )
+    // }
 }
 </script>
 

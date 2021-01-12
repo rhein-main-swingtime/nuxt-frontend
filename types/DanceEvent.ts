@@ -1,4 +1,3 @@
-
 export interface danceEventPayloadItemInterface {
     id: string
     city: string
@@ -19,9 +18,12 @@ export interface DanceEventsCollection {
     [key: number]: DanceEventPayloadItem
 }
 
-export interface DanceEventsFilterInterface {
+export interface DanceEventsFiltersInterface {
     [key: string]: {
-        [key: string]: boolean
+        [key: string]: {
+            active: boolean,
+            count: number | null
+        }
     }
 }
 
@@ -30,7 +32,7 @@ export interface DanceEventsApiFilters {
 }
 
 export interface danceEventsApiResponseInterface {
-    filters: {[key: string]: Array<string>}
+    filters: DanceEventsFiltersInterface
     danceEvents: Array<danceEventPayloadItemInterface>
     dates: DanceDatesCollectionInterface
 }
