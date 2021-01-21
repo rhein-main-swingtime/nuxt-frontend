@@ -1,20 +1,21 @@
+import { DanceEventDatesMap } from './../../types/DanceEvent';
 import { Module, VuexModule, Mutation, MutationAction, Action } from 'vuex-module-decorators'
 import _ from 'lodash'
 import {
-    DanceEventsCollection as DanceEventsByDatesCollection,
-    DanceEventPayloadItem,
+    DanceEventDataItem,
     DanceEventsFiltersInterface,
-    danceEventsApiResponseInterface
+    danceEventsApiResponseInterface,
+    DanceDatesCollectionInterface
 } from '../../types/DanceEvent'
 import { $axios } from '~/utils/api'
 
-function isFilterInUrl (category: string, filterName: string, url: string): boolean {
-    return decodeURI(url)
-        .toLowerCase()
-        .includes(
-            category.toLowerCase() + '[]=' + filterName.toLowerCase()
-        )
-}
+// function isFilterInUrl (category: string, filterName: string, url: string): boolean {
+//     return decodeURI(url)
+//         .toLowerCase()
+//         .includes(
+//             category.toLowerCase() + '[]=' + filterName.toLowerCase()
+//         )
+// }
 
 @Module({
     name: 'modules/DanceEventsModule',
@@ -23,12 +24,43 @@ function isFilterInUrl (category: string, filterName: string, url: string): bool
 })
 export default class DanceEventsModule extends VuexModule {
     searchParams: null | string = null
-    dates: DanceEventsByDatesCollection = []
-    danceEvents: {[key: number]: DanceEventPayloadItem} | null = null
+    danceEvents: {[key: number]: DanceEventDataItem} | null = null
     filters: DanceEventsFiltersInterface | null = {}
     eventsLoading: boolean | null = null
     moreEventsAvailable: boolean = false
     numberOfEvents = 0
+    minDate: Date = new Date()
+    maxDate: Date = new Date(new Date().setFullYear(this.minDate.getFullYear() + 2))
+    // dateMaps = this.createEmptyDateMaps()
+    dateMaps = this.createEmptyDateMaps()
+
+    private createEmptyDateMaps () {
+        const monthly: DanceDatesCollectionInterface = {}
+        const daily: DanceDatesCollectionInterface = {}
+        // const movingDate = new Date(this.minDate)
+
+        // while (movingDate <= this.maxDate) {
+        //     const monthAsString = this.returnMonthlyKey(movingDate)
+        //     if (!Object.keys(monthly).includes(monthAsString)) {
+        //         monthly[monthAsString] = []
+        //     }
+        //     daily[this.returnDailyKey(movingDate)] = []
+        //     movingDate.setDate(movingDate.getDate() + 1)
+        // }
+
+        return { monthly, daily }
+    }
+
+    private returnMonthlyKey (date: Date): string {
+        return [
+            date.getFullYear(),
+            (date.getMonth() + 1).toString().padStart(2, '0')
+        ].join('-')
+    }
+
+    private returnDailyKey (date: Date) {
+        return this.returnMonthlyKey(date) + '-' + date.getDate().toString().padStart(2, '0')
+    }
 
     get routeQuery (): string {
         if (this.filters === null) {
@@ -63,24 +95,13 @@ export default class DanceEventsModule extends VuexModule {
         return false
     }
 
-    // @MutationAction({ mutate: ['filters'] })
-    // async fetchFilters (params: { ['host']: string, ['search']: string }) {
-    //     return await $axios.get(params.host + 'filters')
-    //         .then(response => response.data)
-    //         .then((payload: {[key: string]: Array<string>}) => {
-    //             const filters = {} as DanceEventsFiltersInterface
+    get eventsByMonth (): null | DanceDatesCollectionInterface {
+        return this.dateMaps.monthly || {}
+    }
 
-    //             for (const [category, entries] of Object.entries(payload)) {
-    //                 filters[category] = {}
-
-    //                 entries.forEach((entry) => {
-    //                     filters[category][entry] = isFilterInUrl(category, entry, params.search)
-    //                 })
-    //             }
-
-    //             return { filters }
-    //         })
-    // }
+    get eventsByDay () : null | DanceDatesCollectionInterface {
+        return this.dateMaps.daily || {}
+    }
 
     @Mutation
     updateFilter (payload: any) {
@@ -106,6 +127,7 @@ export default class DanceEventsModule extends VuexModule {
 
     @Mutation
     toggleEventsLoading (status: boolean) {
+        this.dateMaps.monthly['2021-01'] = []
         this.eventsLoading = status
     }
 
@@ -114,20 +136,22 @@ export default class DanceEventsModule extends VuexModule {
         this.moreEventsAvailable = status
     }
 
-    @Mutation setDanceEvents (danceEvents: {[key: number]: DanceEventPayloadItem}) {
+    @Mutation setDanceEvents (danceEvents: {[key: number]: DanceEventDataItem}) {
         this.danceEvents = danceEvents
     }
 
-    @Mutation appendDanceEvents (danceEvents: {[key: number]: DanceEventPayloadItem}) {
+    @Mutation appendDanceEvents (danceEvents: {[key: number]: DanceEventDataItem}) {
         this.danceEvents = _.merge(this.danceEvents, danceEvents)
     }
 
-    @Mutation setDates (datesCollection: any) {
-        this.dates = datesCollection
+    @Mutation setEventByDates (datesCollection: any) {
+        this.dateMaps.monthly = datesCollection.monthly
+        this.dateMaps.daily = datesCollection.daily
     }
 
-    @Mutation appendDates (datesCollection: any) {
-        this.dates = _.merge(this.dates, datesCollection)
+    @Mutation appendEventsByDates (datesCollection: any) {
+        this.dateMaps.monthly = _.merge(this.dateMaps.monthly, datesCollection.monthly)
+        this.dateMaps.daily = _.merge(this.dateMaps.daily, datesCollection.daily)
     }
 
     @Mutation setFilters (filters: DanceEventsFiltersInterface) {
@@ -157,25 +181,25 @@ export default class DanceEventsModule extends VuexModule {
             .then(response => response.data)
             .then((payload: danceEventsApiResponseInterface) => {
                 const append = (params.skip > 0 && this.numberOfEvents > 0)
-                const events : {[key: number]: DanceEventPayloadItem} = {}
+                const events : {[key: number]: DanceEventDataItem} = {}
 
                 payload.danceEvents.forEach((e) => {
-                    events[parseInt(e.id)] = new DanceEventPayloadItem(e)
+                    events[parseInt(e.id)] = new DanceEventDataItem(e)
                 })
 
                 if (append) {
                     this.appendDanceEvents(events)
-                    this.appendDates(payload.dates)
+                    this.appendEventsByDates(payload.dates)
                     this.incrementNumber(_.size(payload.danceEvents))
                 } else {
                     this.setDanceEvents(events)
-                    this.setDates(payload.dates)
+                    this.setEventByDates(payload.dates)
                     this.setNumberOfEvents(_.size(payload.danceEvents))
                 }
 
                 this.setFilters(payload.filters)
 
-                this.toggleEventsLoading(false)
+                // this.toggleEventsLoading(false)
                 this.toggleMoreEventsAvailable(Object.keys(payload.danceEvents).length === 25)
             })
     }

@@ -4,7 +4,7 @@
     id="page-header"
     class="flex max-w-screen-xl flex-col w-full text-gray-500 py-1 px-2
       uppercase text-center md:text-left leading-extra-tight
-      md:col-span-3 z-10"
+      md:col-span-3 z-1000"
     :class="headerClasses"
   >
     <h1>

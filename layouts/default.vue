@@ -3,7 +3,7 @@
     id="app-container"
     class="text-gray-900 antialiased font-serif
       w-full max-w-screen-lg
-      pb-32 pt-9 sm:pt-12
+      pt-9 sm:pt-12
       lg:mx-auto
       md:px-5
       "
@@ -88,7 +88,7 @@
       <div
         v-if="pageNavActive"
         id="mobile-nav-middle-layer"
-        class="z-10 fixed top-0 left-0 h-screen w-screen bg-black bg-opacity-80"
+        class="z-110 fixed top-0 left-0 h-screen w-screen bg-black bg-opacity-80"
       >
         <!-- <div class="bg-black opacity-70 absolute top-0 left-0 h-full w-full" /> -->
       </div>

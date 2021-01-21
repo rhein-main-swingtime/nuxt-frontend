@@ -6,18 +6,22 @@
 
     <section v-for="(filterItems, filterCategory) in filters" :key="filterCategory.categoryName" class="flex filter-section border-t border-gray-400">
       <div class="w-full mb-5 p-2">
-        <h5 class="font-bold text-xl">
-          {{ $t(filterCategory) }}
-        </h5>
         <form>
-          <DanceEventsFilterItem
-            v-for="(filterValues, filterName) in filterItems"
-            :key="'dance-event-filter-' + filterName"
-            :filter-category="filterCategory"
-            :filter-name="filterName"
-            :filter-values="filterValues"
-            @filter:update="handleFilterUpdate"
-          />
+          <fieldset class="inline">
+            <h5 class="font-bold text-xl inline">
+              {{ $t(filterCategory) }}:
+            </h5>
+
+            <DanceEventsFilterItem
+              v-for="(filterValues, filterName) in filterItems"
+              :key="'dance-event-filter-' + filterName"
+              :filter-category="filterCategory"
+              :filter-name="filterName"
+              :filter-values="filterValues"
+              class="inline-block px-2"
+              @filter:update="handleFilterUpdate"
+            />
+          </fieldset>
         </form>
       </div>
     </section>

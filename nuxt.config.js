@@ -44,6 +44,8 @@ export default {
     plugins: [
         '~/plugins/axios-accessor.ts',
         { src: '~/plugins/v-calendar', ssr: false },
+        { src: '~/plugins/full-calendar', ssr: false },
+        { src: '~/plugins/loading-skeleton', ssr: false },
         { src: '~/plugins/infiniteLoading', ssr: false }
     ],
 
@@ -175,6 +177,7 @@ export default {
                 config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
             }
         },
+        transpile: /@fullcalendar.*/,
         plugins: [
             new webpack.ProvidePlugin({
                 _: 'lodash'

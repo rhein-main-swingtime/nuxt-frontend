@@ -1,19 +1,17 @@
 <template>
-  <fieldset>
-    <label
-      :for="filterName + '-filter'"
-      @click="toggleValue()"
+  <label
+    :for="filterName + '-filter'"
+    @click="toggleValue()"
+  >
+    <input
+      type="checkbox"
+      :name="filterName + '-filter'"
+      :checked="isChecked"
+      :disabled="isDisabled"
     >
-      <input
-        type="checkbox"
-        :name="filterName + '-filter'"
-        :checked="isChecked"
-        :disabled="isDisabled"
-      >
-      {{ $t(filterName) }}
-      <span v-if="!isChecked">({{ count }})</span>
-    </label>
-  </fieldset>
+    {{ $t(filterName) }}
+    <span v-if="!isChecked">({{ count }})</span>
+  </label>
 </template>
 
 <script lang="ts">

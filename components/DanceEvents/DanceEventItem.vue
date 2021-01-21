@@ -1,5 +1,5 @@
 <template>
-  <rms-card class="grid grid-cols-12">
+  <rms-card :id="id" class="grid grid-cols-12">
     <div class="col-span-6  px-1 py-1 align-middle">
       {{ startDateComputed }} {{ $t('page-dance-event-item-time-from') }} {{ startTime }}
     </div>
@@ -16,9 +16,7 @@
       <div class="text-2xl md:text-4xl ">
         <a href="#">{{ summary }}</a>
       </div>
-      <div class="absolute bottom-0 right-0 mb-1 px-2">
-
-      </div>
+      <div class="absolute bottom-0 right-0 mb-1 px-2" />
     </div>
     <div name="calendar" class="col-span-12 px-4 py-1  text-md text-center opacity-75">
       &mdash;&nbsp;{{ calendar }}&nbsp;&mdash;
@@ -34,6 +32,7 @@
 </template>
 
 <script lang="ts">
+import { isElement } from 'lodash'
 import { Component, Prop, Vue, getModule, Watch } from 'nuxt-property-decorator'
 import DanceEventsModule from '../../store/modules/DanceEventsModule'
 
@@ -47,7 +46,9 @@ export default class DanceEventsItem extends Vue {
     @Prop({ required: true }) location!: string
     @Prop({ required: true }) startDateTime!: Date
     @Prop({ required: true }) endDateTime!: Date
-    @Prop({ required: true }) id!: Number
+    @Prop({ required: true }) id!: String
+    @Prop({ default: null }) topPosObserver!: IntersectionObserver | null
+    @Prop({ default: null }) bottomPosObserver!: IntersectionObserver | null
 
     DanceEventsStoreInstance: DanceEventsModule = getModule(DanceEventsModule, this.$store)
 
@@ -64,6 +65,21 @@ export default class DanceEventsItem extends Vue {
         // return this.startDateTime.getDate() +
         //     '.' + (this.startDateTime.getMonth() + 1) +
         //     '.'
+    }
+
+    attachObservers () {
+        if (isElement(this.$el)) {
+            if (this.topPosObserver) {
+                this.$nextTick(function () {
+                  this.topPosObserver!.observe(this.$el)
+                })
+            }
+            if (this.bottomPosObserver) {
+                this.$nextTick(function () {
+                  this.bottomPosObserver!.observe(this.$el)
+                })
+            }
+        }
     }
 
     get startTime (): String {
@@ -89,6 +105,13 @@ export default class DanceEventsItem extends Vue {
 
     public formatMinutes (minuteCount: Number): string {
         return (String)(minuteCount < 10 ? '0' + minuteCount : minuteCount)
+    }
+
+    mounted () {
+        const callback = () => {
+            this.attachObservers()
+        }
+        setTimeout(callback, 300)
     }
 }
 </script>

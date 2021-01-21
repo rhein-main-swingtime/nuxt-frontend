@@ -10,34 +10,7 @@ export interface danceEventPayloadItemInterface {
     location: string
 }
 
-export interface DanceDatesCollectionInterface {
-        [key: string]: Array<number>
-}
-
-export interface DanceEventsCollection {
-    [key: number]: DanceEventPayloadItem
-}
-
-export interface DanceEventsFiltersInterface {
-    [key: string]: {
-        [key: string]: {
-            active: boolean,
-            count: number | null
-        }
-    }
-}
-
-export interface DanceEventsApiFilters {
-    [key: string]: Array<string>
-}
-
-export interface danceEventsApiResponseInterface {
-    filters: DanceEventsFiltersInterface
-    danceEvents: Array<danceEventPayloadItemInterface>
-    dates: DanceDatesCollectionInterface
-}
-
-export class DanceEventPayloadItem {
+export class DanceEventDataItem {
     id: number
     city?: string
     calendar?: string
@@ -58,5 +31,35 @@ export class DanceEventPayloadItem {
         this.summary = payload.summary
         this.description = payload.description
         this.location = payload.location
+    }
+}
+
+export interface DanceDatesCollectionInterface {
+        [key: string]: Array<number>
+}
+
+export interface DanceEventDatesMap {
+    [key: string]: Number[]
+}
+
+export interface DanceEventsFiltersInterface {
+    [key: string]: {
+        [key: string]: {
+            active: boolean,
+            count: number | null
+        }
+    }
+}
+
+export interface DanceEventsApiFilters {
+    [key: string]: Array<string>
+}
+
+export interface danceEventsApiResponseInterface {
+    filters: DanceEventsFiltersInterface
+    danceEvents: Array<danceEventPayloadItemInterface>
+    dates: {
+        'monthly': DanceDatesCollectionInterface,
+        'daily': DanceDatesCollectionInterface
     }
 }
