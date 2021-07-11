@@ -1,12 +1,13 @@
-import { DanceEventDatesMap } from './../../types/DanceEvent';
 import { Module, VuexModule, Mutation, MutationAction, Action } from 'vuex-module-decorators'
 import _ from 'lodash'
+import { faTshirt } from '@fortawesome/free-solid-svg-icons'
 import {
     DanceEventDataItem,
     DanceEventsFiltersInterface,
     danceEventsApiResponseInterface,
-    DanceDatesCollectionInterface
+    danceEventPayloadItemInterface
 } from '../../types/DanceEvent'
+import { DanceEventDatesMap } from './../../types/DanceEvent'
 import { $axios } from '~/utils/api'
 
 // function isFilterInUrl (category: string, filterName: string, url: string): boolean {
@@ -24,83 +25,76 @@ import { $axios } from '~/utils/api'
 })
 export default class DanceEventsModule extends VuexModule {
     searchParams: null | string = null
-    danceEvents: {[key: number]: DanceEventDataItem} | null = null
+    danceEvents: {[key: number]: DanceEventDataItem} = {}
     filters: DanceEventsFiltersInterface | null = {}
-    eventsLoading: boolean | null = null
-    moreEventsAvailable: boolean = false
-    numberOfEvents = 0
-    minDate: Date = new Date()
-    maxDate: Date = new Date(new Date().setFullYear(this.minDate.getFullYear() + 2))
-    // dateMaps = this.createEmptyDateMaps()
-    dateMaps = this.createEmptyDateMaps()
+    months = this.returnAllMonths()
+    _eventIdsByMonth: {[key: string]: Array<string>} = {}
+    startDate = new Date(
+        (new Date()).getFullYear(),
+        (new Date()).getMonth(),
+        1
+    )
 
-    private createEmptyDateMaps () {
-        const monthly: DanceDatesCollectionInterface = {}
-        const daily: DanceDatesCollectionInterface = {}
-        // const movingDate = new Date(this.minDate)
+    endDate = new Date(
+        this.startDate.getFullYear() + 2,
+        this.startDate.getMonth(),
+        this.startDate.getDate()
+    )
 
-        // while (movingDate <= this.maxDate) {
-        //     const monthAsString = this.returnMonthlyKey(movingDate)
-        //     if (!Object.keys(monthly).includes(monthAsString)) {
-        //         monthly[monthAsString] = []
-        //     }
-        //     daily[this.returnDailyKey(movingDate)] = []
-        //     movingDate.setDate(movingDate.getDate() + 1)
-        // }
+    _dateMap = this.generateDateMap()
 
-        return { monthly, daily }
+    get eventIdsByMonth () {
+        return this._eventIdsByMonth
     }
 
-    private returnMonthlyKey (date: Date): string {
-        return [
-            date.getFullYear(),
-            (date.getMonth() + 1).toString().padStart(2, '0')
-        ].join('-')
+    private generateDateMap () {
+        const rollingDate = this.startDate
+        const out: {[key: string]: Array<number> | null } = {}
+        while (rollingDate <= this.endDate) {
+            const key = [
+                rollingDate.getFullYear(),
+                rollingDate.getMonth(),
+                rollingDate.getDate()
+            ].join('-')
+            out[key] = null
+            rollingDate.setDate(rollingDate.getDate() + 1)
+        }
+        return out
     }
 
-    private returnDailyKey (date: Date) {
-        return this.returnMonthlyKey(date) + '-' + date.getDate().toString().padStart(2, '0')
-    }
+    private returnAllMonths (): Date[] {
+        const startDate = new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            1
+        )
 
-    get routeQuery (): string {
-        if (this.filters === null) {
-            return ''
+        const endDate = new Date(
+            startDate.getFullYear() + 2,
+            startDate.getMonth(),
+            startDate.getDate()
+        )
+
+        const months = []
+
+        let dateIterrator = startDate
+
+        while (dateIterrator <= endDate) {
+            months.push(dateIterrator)
+            const nextMonth = dateIterrator.getMonth() < 11 ? dateIterrator.getMonth() + 1 : 0
+
+            const nextYear = nextMonth > 0
+                ? dateIterrator.getFullYear()
+                : dateIterrator.getFullYear() + 1
+
+            dateIterrator = new Date(
+                nextYear,
+                nextMonth,
+                1
+            )
         }
 
-        const queryParts = []
-
-        for (const [category, filters] of Object.entries(this.filters)) {
-            for (const [filter, value] of Object.entries(filters)) {
-                if (value.active === true) {
-                    queryParts.push(encodeURI(category) + '[]=' + encodeURI(filter))
-                }
-            }
-        }
-
-        return (queryParts.length > 0 ? '?' + queryParts.join('&') : '')
-    }
-
-    get hasActiveFilter () {
-        if (this.filters === null || this.filters === {}) {
-            return false
-        }
-
-        Object.values(this.filters).forEach((section) => {
-            const activeNum = Object.values(section).filter(item => item.active).length
-            if (activeNum > 0) {
-                return true
-            }
-        })
-
-        return false
-    }
-
-    get eventsByMonth (): null | DanceDatesCollectionInterface {
-        return this.dateMaps.monthly || {}
-    }
-
-    get eventsByDay () : null | DanceDatesCollectionInterface {
-        return this.dateMaps.daily || {}
+        return months
     }
 
     @Mutation
@@ -126,81 +120,53 @@ export default class DanceEventsModule extends VuexModule {
     }
 
     @Mutation
-    toggleEventsLoading (status: boolean) {
-        this.dateMaps.monthly['2021-01'] = []
-        this.eventsLoading = status
+    addEvent (payload: {id: number, danceEvent: DanceEventDataItem}) {
+        const tmp = this.danceEvents
+        this.danceEvents = {}
+
+        this.danceEvents = _.merge(
+            tmp,
+            {
+                [payload.id]: payload.danceEvent
+            }
+        )
     }
 
     @Mutation
-    toggleMoreEventsAvailable (status: boolean) {
-        this.moreEventsAvailable = status
-    }
+    addEventIDsToDateMap (eventIds: Array<number>) {
+        const tmp = this._dateMap
+        this._dateMap = {}
 
-    @Mutation setDanceEvents (danceEvents: {[key: number]: DanceEventDataItem}) {
-        this.danceEvents = danceEvents
-    }
+        for (const eventId of eventIds) {
+            const eventDate = this.danceEvents[eventId].startDateTime
+            const dateKey = [eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate()].join('-')
 
-    @Mutation appendDanceEvents (danceEvents: {[key: number]: DanceEventDataItem}) {
-        this.danceEvents = _.merge(this.danceEvents, danceEvents)
-    }
+            if (tmp[dateKey] === null) {
+                tmp[dateKey] = []
+            }
 
-    @Mutation setEventByDates (datesCollection: any) {
-        this.dateMaps.monthly = datesCollection.monthly
-        this.dateMaps.daily = datesCollection.daily
-    }
+            tmp[dateKey]?.push(eventId)
+        }
 
-    @Mutation appendEventsByDates (datesCollection: any) {
-        this.dateMaps.monthly = _.merge(this.dateMaps.monthly, datesCollection.monthly)
-        this.dateMaps.daily = _.merge(this.dateMaps.daily, datesCollection.daily)
-    }
-
-    @Mutation setFilters (filters: DanceEventsFiltersInterface) {
-        this.filters = filters
-    }
-
-    @Mutation setNumberOfEvents (value: number) {
-        this.numberOfEvents = value
-    }
-
-    @Mutation incrementNumber (value: number) {
-        this.numberOfEvents += value
+        this._dateMap = tmp
     }
 
     @Action
-    async fetchEvents (params: { ['host']: string, ['skip']: number }) {
-        this.toggleEventsLoading(true)
-        this.toggleMoreEventsAvailable(false)
-        let search = this.routeQuery
-
-        if (params.skip) {
-            const prefix = (search === '' ? '?' : '&')
-            search += prefix + 'skip=' + params.skip
-        }
-
-        return await $axios.get(params.host + 'events' + search)
+    async fetchEventsForMonth (date: string) {
+        const host = '//localhost:8088/'
+        return await $axios.get(host + 'events/byMonth/' + date)
             .then(response => response.data)
-            .then((payload: danceEventsApiResponseInterface) => {
-                const append = (params.skip > 0 && this.numberOfEvents > 0)
-                const events : {[key: number]: DanceEventDataItem} = {}
+            .then((payload: Array<danceEventPayloadItemInterface>) => {
+                const eventIds: number[] = []
 
-                payload.danceEvents.forEach((e) => {
-                    events[parseInt(e.id)] = new DanceEventDataItem(e)
+                payload.map((e) => {
+                    const danceEvent = new DanceEventDataItem(e)
+                    const id = e.id
+                    this.addEvent({ id, danceEvent })
+                    eventIds.push(e.id)
                 })
 
-                if (append) {
-                    this.appendDanceEvents(events)
-                    this.appendEventsByDates(payload.dates)
-                    this.incrementNumber(_.size(payload.danceEvents))
-                } else {
-                    this.setDanceEvents(events)
-                    this.setEventByDates(payload.dates)
-                    this.setNumberOfEvents(_.size(payload.danceEvents))
-                }
-
-                this.setFilters(payload.filters)
-
-                // this.toggleEventsLoading(false)
-                this.toggleMoreEventsAvailable(Object.keys(payload.danceEvents).length === 25)
+                this.addEventIDsToDateMap(eventIds)
             })
     }
 }

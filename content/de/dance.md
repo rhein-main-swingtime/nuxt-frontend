@@ -4,7 +4,7 @@ name: tanzen
 intro: Komm und tanz mit uns!
 
 ---
-# Tanzen lernen
+# Komm tanzen
 
 The knives seemed to move of their own accord, gliding with a ritual lack of urgency through the center of his closed left eyelid. The alarm still oscillated, louder here, the rear wall dulling the roar of the Sprawl’s towers and ragged Fuller domes, dim figures moving toward him in the dark.
 

@@ -1,26 +1,39 @@
 <template>
-  <div class="w-full">
-    <nuxt-content class="prose prose-xl" :document="content" />
+  <div class="w-full grid grid-cols-12">
+    <div class="col-span-12">
+      <nuxt-content class="prose prose-xl" :document="content" />
+    </div>
     <!-- <div id="dance-page-filter" class="w-full">
       <DanceEventsFilter class="sticky top-0" :title="$t('page-dance-events-filter')" />
     </div> -->
     <!-- <div class="h-screen flex flex-col"> -->
-    <div id="vc-container-parent" class="sticky top-8 z-50 -mx-4 shadow-md bg-white">
-      <v-calendar
-        ref="calendar"
-        :min-date="calendarMinMax.min"
-        :max-date="calendarMinMax.max"
-        :attributes="calendarAttributes"
-        is-expanded
-        @update:from-page="handeCalendarNavigation"
-        @dayclick="handeCalendarNavigation"
+    <!-- <portal to="portal-below-header"> -->
+    <!-- </portal> -->
+    <div class="col-span-8">
+      <dance-events-list
+        class="flex-grow"
+        @rmsevent:top-pos="handleDateTopPos"
       />
     </div>
-    <dance-events-list
-      class="flex-grow overflow-y-scroll"
-      @rmsevent:top-pos="handleDateTopPos"
-    />
-    <!-- </div> -->
+    <div class="col-span-4">
+      <div class="top-0 sticky z-50 mt-12 pt-1">
+        <div id="vc-container-parent" class="w-full">
+          <!-- <v-calendar
+            ref="calendar"
+            :min-date="calendarMinMax.min"
+            :max-date="calendarMinMax.max"
+            :attributes="calendarAttributes"
+            :is-expanded="true"
+            @update:from-page="handlePageNavigation"
+            @dayclick="handeCalendarNavigation"
+          /> -->
+        </div>
+        <div class="col-span-12">
+          <h1>Filter</h1>
+        </div>
+      </div>
+      <!-- <DanceEventsFilter class="sticky top-0 col-span-6" :title="$t('page-dance-events-filter')" /> -->
+    </div>
   </div>
 </template>
 
@@ -37,6 +50,7 @@ export default class DanceEventsPage extends Vue {
     // mixins!: [PageContentMixin]
     calendarHighlight = new Date()
     enableHighlightMovement = true
+    // layout = 'contentPage'
 
     async asyncData (context: any) {
         const { $content, app, route } = context
@@ -116,7 +130,35 @@ export default class DanceEventsPage extends Vue {
         ].join('-')
     }
 
-    handeCalendarNavigation (page: any) {
+    private handlePageNavigation (page: { month: number, year: number}) {
+        const elementId = page.year + '_' + page.month
+        const scrollTarget = document.getElementById(elementId)
+
+        if (scrollTarget === undefined || scrollTarget === null) {
+            console.log('no target found')
+            return
+        }
+
+        const scrollTargetXPos = scrollTarget.getBoundingClientRect().x +
+            scrollTarget.getBoundingClientRect().width
+
+        this.$scrollTo(
+            scrollTarget,
+            500,
+            {
+                easing: 'ease-in',
+                offset: 0 //,
+                // onDone: callback
+            }
+        )
+    }
+
+    handeCalendarNavigation (page: { day: number, month: number, year: number}) {
+        debugger
+
+
+
+        return
         const numericId = this.nextEventByDate(page.date || new Date())
         const scrollTarget = document.getElementById('dance-event-' + numericId)
         if (page.event === undefined || !scrollTarget) {
@@ -163,9 +205,9 @@ export default class DanceEventsPage extends Vue {
         )
     }
 
-    get eventsByDay () {
-        return this.DanceEventsStoreInstance.eventsByDay
-    }
+    // get eventsByDay () {
+    //     // return this.DanceEventsStoreInstance.eventsByDay
+    // }
 
     private returnMonthlyKey (date: Date): string {
         return [
@@ -178,29 +220,29 @@ export default class DanceEventsPage extends Vue {
         return this.returnMonthlyKey(date) + '-' + date.getDate().toString().padStart(2, '0')
     }
 
-    nextEventByDate (date: Date): number|null {
-        if (!this.eventsByDay) {
-            return null
-        }
+    // nextEventByDate (date: Date): number|null {
+    //     if (!this.eventsByDay) {
+    //         return null
+    //     }
 
-        let dateKey = this.returnDailyKey(date)
-        while (
-            date <= this.DanceEventsStoreInstance.maxDate &&
-            Object.keys(this.eventsByDay).includes(dateKey) !== true
-        ) {
-            date.setDate(date.getDate() + 1)
-            dateKey = this.returnDailyKey(date)
-        }
+    //     let dateKey = this.returnDailyKey(date)
+    //     while (
+    //         date <= this.DanceEventsStoreInstance.maxDate &&
+    //         Object.keys(this.eventsByDay).includes(dateKey) !== true
+    //     ) {
+    //         date.setDate(date.getDate() + 1)
+    //         dateKey = this.returnDailyKey(date)
+    //     }
 
-        try {
-            if (Array.isArray(this.eventsByDay[dateKey])) {
-                return this.eventsByDay[dateKey][0]
-            }
-            return null
-        } catch {
-            return null
-        }
-    }
+    //     try {
+    //         if (Array.isArray(this.eventsByDay[dateKey])) {
+    //             return this.eventsByDay[dateKey][0]
+    //         }
+    //         return null
+    //     } catch {
+    //         return null
+    //     }
+    // }
 
     handleDayNavigation (day: any) {
         console.log(day)
@@ -213,32 +255,32 @@ export default class DanceEventsPage extends Vue {
         }
     }
 
-    @Watch('eventsApiQuery')
-    fetchEvents (queryVal: string | null) {
-        if (queryVal === null) {
-            return
-        }
-        history.replaceState(
-            {
-                search: this.eventsApiQuery
-            },
-            document.title,
-            document.location.protocol + '//' +
-            document.location.host +
-            document.location.pathname +
-            this.eventsApiQuery
-        )
+    // @Watch('eventsApiQuery')
+    // fetchEvents (queryVal: string | null) {
+    //     if (queryVal === null) {
+    //         return
+    //     }
+    //     history.replaceState(
+    //         {
+    //             search: this.eventsApiQuery
+    //         },
+    //         document.title,
+    //         document.location.protocol + '//' +
+    //         document.location.host +
+    //         document.location.pathname +
+    //         this.eventsApiQuery
+    //     )
 
-        this.DanceEventsStoreInstance.fetchEvents(
-            { host: this.$config.apiHost, skip: 0 }
-        )
-    }
+    //     this.DanceEventsStoreInstance.fetchEvents(
+    //         { host: this.$config.apiHost, skip: 0 }
+    //     )
+    // }
 
-    mounted () {
-        this.DanceEventsStoreInstance.fetchEvents(
-            { host: this.$config.apiHost, skip: 0 }
-        )
-    }
+    // mounted () {
+    //     this.DanceEventsStoreInstance.fetchEvents(
+    //         { host: this.$config.apiHost, skip: 0 }
+    //     )
+    // }
 }
 </script>
 

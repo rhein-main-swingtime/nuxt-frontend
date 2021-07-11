@@ -47,8 +47,6 @@ export default class DanceEventsItem extends Vue {
     @Prop({ required: true }) startDateTime!: Date
     @Prop({ required: true }) endDateTime!: Date
     @Prop({ required: true }) id!: String
-    @Prop({ default: null }) topPosObserver!: IntersectionObserver | null
-    @Prop({ default: null }) bottomPosObserver!: IntersectionObserver | null
 
     DanceEventsStoreInstance: DanceEventsModule = getModule(DanceEventsModule, this.$store)
 
@@ -65,21 +63,6 @@ export default class DanceEventsItem extends Vue {
         // return this.startDateTime.getDate() +
         //     '.' + (this.startDateTime.getMonth() + 1) +
         //     '.'
-    }
-
-    attachObservers () {
-        if (isElement(this.$el)) {
-            if (this.topPosObserver) {
-                this.$nextTick(function () {
-                  this.topPosObserver!.observe(this.$el)
-                })
-            }
-            if (this.bottomPosObserver) {
-                this.$nextTick(function () {
-                  this.bottomPosObserver!.observe(this.$el)
-                })
-            }
-        }
     }
 
     get startTime (): String {
@@ -105,13 +88,6 @@ export default class DanceEventsItem extends Vue {
 
     public formatMinutes (minuteCount: Number): string {
         return (String)(minuteCount < 10 ? '0' + minuteCount : minuteCount)
-    }
-
-    mounted () {
-        const callback = () => {
-            this.attachObservers()
-        }
-        setTimeout(callback, 300)
     }
 }
 </script>

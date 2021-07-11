@@ -29,6 +29,6 @@ export default {
 
 <style scoped>
     .highlight {
-        background-color: theme('colors.tree-poppy.default');
+        /* background-color: theme('green'); */
     }
 </style>

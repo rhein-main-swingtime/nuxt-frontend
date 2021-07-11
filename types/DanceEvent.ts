@@ -1,5 +1,5 @@
 export interface danceEventPayloadItemInterface {
-    id: string
+    id: number
     city: string
     calendar: string
     category: string
@@ -24,7 +24,7 @@ export class DanceEventDataItem {
     constructor (payload: danceEventPayloadItemInterface) {
         this.startDateTime = new Date(payload.start_date_time)
         this.endDateTime = new Date(payload.end_date_time)
-        this.id = parseInt(payload.id)
+        this.id = payload.id
         this.city = payload.city
         this.calendar = payload.calendar
         this.category = payload.category

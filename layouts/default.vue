@@ -2,7 +2,7 @@
   <div
     id="app-container"
     class="text-gray-900 antialiased font-serif
-      w-full max-w-screen-lg
+      w-full max-w-screen-xl
       pt-9 sm:pt-12
       lg:mx-auto
       md:px-5
@@ -19,6 +19,8 @@
     <div id="content-container" class="flex flex-col lg:grid grid-cols-12 gap-4">
       <page-header />
       <!-- Random Stuff -->
+
+      <!-- <portal-target name="portal-below-header" /> -->
       <h2
         v-if="isRootPage"
         class="text-4xl min-w-0 flex flex-col text-red-400 hidden sm:block

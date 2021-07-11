@@ -46,7 +46,9 @@ export default {
         { src: '~/plugins/v-calendar', ssr: false },
         { src: '~/plugins/full-calendar', ssr: false },
         { src: '~/plugins/loading-skeleton', ssr: false },
-        { src: '~/plugins/infiniteLoading', ssr: false }
+        { src: '~/plugins/infiniteLoading', ssr: false },
+        { src: '~/plugins/observeVisibility', ssr: false },
+        { src: '~/plugins/contentLoader', ssr: false },
     ],
 
     // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -76,6 +78,7 @@ export default {
         '@nuxtjs/pwa',
         // https://go.nuxtjs.dev/content
         '@nuxt/content',
+        'portal-vue/nuxt',
         ['nuxt-i18n', {
             parsePages: false,
             pages: {
@@ -144,6 +147,10 @@ export default {
                     shortDate: {
                         month: 'short',
                         day: 'numeric'
+                    },
+                    shortDateMonthYear: {
+                        month: 'long',
+                        year: 'numeric'
                     },
                     shortTime: {
                         hour: 'numeric',

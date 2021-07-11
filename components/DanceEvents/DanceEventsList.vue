@@ -1,20 +1,7 @@
 <template>
   <section class="w-auto block">
-    <div class="flex flex-col relative">
+    <!-- <div class="flex flex-col relative">
       <div v-for="(events, date) in eventsByMonth" :id="'events-month-' + date" :key="date" class="date">
-        <!-- <div
-          id="dance-event-scroll-area"
-          class=" hidden sm:inline-block
-            border z-10 border-gray-300 rounded-l-none
-            px-3 py-1 pr-5 rounded-r-full mt-10 sticky top-0
-            overflow-hidden shadow-sm text-xl
-          "
-        >
-          <span class="relative z-10">
-            {{ dateLocalized(date) }}
-          </span>
-        </div> -->
-
         <template v-if="events.length === 0">
           <rms-card v-for="idx in 10" :key="'loading-skel-' + date + '_' + idx">
             <PuSkeleton :count="5" />
@@ -39,17 +26,17 @@
           />
         </template>
       </div>
+    </div> -->
+
+    <div v-for="month in allMonths">
+        <dance-events-month :first-day="month" />
     </div>
 
-    <div v-if="noEventsAvailable">
-      Sorry, nothing found :-/
-    </div>
-
-    <infinite-loading v-if="moreEventsAvailable" @infinite="infiniteHandler">
+    <!-- <infinite-loading v-if="moreEventsAvailable" @infinite="infiniteHandler">
       <div slot="spinner">
         {{ $t('page-dance-events-list-loading') }}
       </div>
-    </infinite-loading>
+    </infinite-loading> -->
   </section>
 </template>
 
@@ -77,34 +64,8 @@ export default class DanceEventsList extends Vue {
         return this.$d(new Date(date), 'longDate')
     }
 
-    get eventsByMonth () {
-        return this.DanceEventsStoreInstance.eventsByMonth
-    }
-
-    get danceEvents () {
-        return this.DanceEventsStoreInstance.danceEvents
-    }
-
-    get isLoading () {
-        return this.DanceEventsStoreInstance.eventsLoading
-    }
-
-    get noEventsAvailable () {
-        return this.isLoading !== true &&
-            this.DanceEventsStoreInstance.danceEvents !== null &&
-            _.isEmpty(this.DanceEventsStoreInstance.danceEvents)
-    }
-
-    get moreEventsAvailable () {
-        return this.DanceEventsStoreInstance.moreEventsAvailable
-    }
-
-    get eventsApiQuery () {
-        return this.DanceEventsStoreInstance.routeQuery ?? ''
-    }
-
-    get numberOfEvents () {
-        return this.DanceEventsStoreInstance.numberOfEvents
+    get allMonths () {
+        return this.DanceEventsStoreInstance.months
     }
 
     @Watch('$el')
